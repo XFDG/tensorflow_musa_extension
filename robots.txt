@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xfdg.github.io/tensorflow_musa_extension/sitemap.xml

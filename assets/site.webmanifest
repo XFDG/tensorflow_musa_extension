@@ -1,0 +1,9 @@
+{
+  "name": "Haoran's AI Infra Lab",
+  "short_name": "AI Infra Lab",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#07090d",
+  "theme_color": "#07090d",
+  "icons": []
+}

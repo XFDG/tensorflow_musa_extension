@@ -3,87 +3,147 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="H200 MoE Grouped GEMM Profiling、线上离线对齐与配置调优项目。">
   <meta name="theme-color" content="#07090d">
-  <title>Haoran Feng — AI Infra Lab</title>
-  <style>
-    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07090d;color:#f2f5f7}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#183448 0,transparent 34%),#07090d}
-    main{width:min(680px,calc(100% - 40px));padding:48px;border:1px solid #ffffff1f;border-radius:24px;background:#0d121acc;box-shadow:0 28px 90px #0008}
-    .mark{width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#9db3ff,#78e3c5);color:#081016;font-weight:800;margin-bottom:28px}
-    h1{font-size:clamp(28px,6vw,48px);line-height:1.08;margin:0 0 16px}p{color:#aab4c2;line-height:1.75;margin:0}.bar{height:3px;background:#ffffff17;border-radius:99px;overflow:hidden;margin-top:30px}.bar::after{content:"";display:block;width:42%;height:100%;background:linear-gradient(90deg,#9db3ff,#78e3c5);animation:load 1.1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(140%)}}
-    a{color:#9db3ff}.error{display:none;margin-top:22px;color:#ffb7b7}
-  </style>
+  <title>H200 MoE GEMM Profiling — Haoran Feng</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../script.js" defer></script>
 </head>
-<body>
+<body data-page="projects">
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="../index.html"><span class="brand-mark">HF</span><span class="brand-copy">Haoran Feng <small>AI Infra Lab</small></span></a>
+      <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false"><span></span></button>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="../index.html" data-nav="home">首页</a><a href="../experience.html" data-nav="experience">经历</a><a href="../projects.html" data-nav="projects">项目</a><a href="../writing.html" data-nav="writing">文章</a><a href="../roadmap.html" data-nav="roadmap">Roadmap</a><a class="nav-cta" href="../resume.html" data-nav="resume">公开简历</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    <div class="mark">HF</div>
-    <h1>正在打开 Haoran's AI Infra Lab</h1>
-    <p>正在加载项目、经历与技术文章。首次访问只需下载一个约 40 KB 的站点包。</p>
-    <div class="bar" aria-label="加载中"></div>
-    <p class="error" id="error">页面加载失败。可以先访问 <a href="https://github.com/XFDG">GitHub</a>，或发送邮件至 <a href="mailto:225010160@link.cuhk.edu.cn">225010160@link.cuhk.edu.cn</a>。</p>
+    <section class="detail-hero">
+      <div class="shell">
+        <div class="detail-breadcrumbs reveal"><a href="../projects.html">Projects</a><span>/</span><span>H200 MoE GEMM Profiling</span></div>
+        <span class="eyebrow reveal">GPU Performance · MoE</span>
+        <h1 class="reveal"><span class="gradient-text">H200 MoE / Grouped GEMM：先把统计语义对齐，再谈 Kernel 调优。</span></h1>
+        <p class="detail-lead reveal">面对 MoE 热路径，最危险的不是“没有 Profile”，而是拿着错误的 rows、shape 或 expert 分布做 Profile。这个项目围绕线上 NVTX range、DeepEP compact rows、本地 replay 与 SM90 config tuning，建立从观测到决策的性能闭环。</p>
+        <div class="detail-meta-grid reveal">
+          <div class="detail-meta"><span>Role</span><strong>Profiling & Kernel Tuning</strong></div>
+          <div class="detail-meta"><span>Hardware</span><strong>NVIDIA H200 · SM90</strong></div>
+          <div class="detail-meta"><span>Stack</span><strong>Nsight · CUTLASS · Quack</strong></div>
+          <div class="detail-meta"><span>Scope</span><strong>Grouped GEMM · MoE Hot Path</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact section-line">
+      <div class="shell detail-layout">
+        <article class="detail-content">
+          <section id="problem">
+            <span class="section-kicker">01 / Problem</span>
+            <h2>同一个“rows”，在不同模块里可能根本不是同一个工作量。</h2>
+            <p>MoE 中一个 token 会被 router 分配给 top-k experts。上游常用 <span class="mono">T × topk</span> 表示全展开 rows，但通信/dispatch 后可能经过 response mask、capacity、drop 或 compact，真正进入 Grouped GEMM 的是 <span class="mono">TK_valid</span>。如果用前者解释后者的 Kernel latency，就会严重低估或高估吞吐。</p>
+            <div class="callout"><strong>关键发现</strong><p>将全展开 rows 与 DeepEP compact rows 混用，会造成约 4×–6× 的性能口径误判。优化前先修正“测的到底是什么”。</p></div>
+          </section>
+
+          <section id="pipeline">
+            <span class="section-kicker">02 / Pipeline</span>
+            <h2>MoE 热路径中的 shape 形成过程</h2>
+            <div class="architecture">
+              <div class="arch-node"><strong>Router</strong><span>T × topk assignments</span></div>
+              <div class="arch-node"><strong>Mask / Compact</strong><span>valid token rows</span></div>
+              <div class="arch-node"><strong>Dispatch</strong><span>expert distribution</span></div>
+              <div class="arch-node"><strong>Grouped GEMM</strong><span>gemm_gated / gemm_out</span></div>
+              <div class="arch-node"><strong>Combine</strong><span>restore token order</span></div>
+            </div>
+            <p>单看矩阵 M/N/K 仍然不够。Grouped GEMM 的性能还取决于每个 expert 的 rows 分布、group 数、空 expert、长尾负载、数据类型、epilogue、调度策略与运行时开销。</p>
+          </section>
+
+          <section id="method">
+            <span class="section-kicker">03 / Method</span>
+            <h2>从线上 Profile 到本地可控 Replay</h2>
+            <ol class="number-list">
+              <li><strong>统一口径：</strong>确认每个 range 中的 rows 是全展开、mask 后有效值，还是 dispatch 后 compact rows。</li>
+              <li><strong>采集代表样本：</strong>从线上执行中抽取 1024 条 forward range，保留 shape、expert 分布与调用类型。</li>
+              <li><strong>构造本地回放：</strong>在相同 GPU 与软件栈上复现代表性 shape，避免训练框架其他阶段干扰。</li>
+              <li><strong>对齐误差：</strong>比较线上与本地 profile 的 latency / MFU，确认 replay 是否足以支撑配置选择。</li>
+              <li><strong>Config tuning：</strong>围绕 SM90 候选 tile、cluster、pipeline 等参数增加 autotune 搜索空间。</li>
+            </ol>
+          </section>
+
+          <section id="replay">
+            <span class="section-kicker">04 / Replay Validation</span>
+            <h2>本地回放必须先证明“像线上”。</h2>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Representative Shape</th><th>Local vs Target Profile</th><th>Interpretation</th></tr></thead>
+                <tbody>
+                  <tr><td>Shape A</td><td>+0.46%</td><td>高度接近，可用于细粒度配置比较</td></tr>
+                  <tr><td>Shape B</td><td>−1.11%</td><td>误差较小，趋势可信</td></tr>
+                  <tr><td>Shape C</td><td>−5.40%</td><td>需要保留系统噪声与分布差异解释</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>这些差异说明 replay 可以作为调优筛选工具，但不能把每个微秒差异都解释为线上收益。对于误差较大的 shape，需要继续检查 expert rows 分布、warm-up、频率、其他流并发和内存状态。</p>
+          </section>
+
+          <section id="tuning">
+            <span class="section-kicker">05 / Tuning</span>
+            <h2>SM90 Config-level Tuning</h2>
+            <p>参与 Quack / CUTLASS Grouped GEMM 的候选配置扩展，围绕 <span class="mono">gemm_gated</span> 与 <span class="mono">gemm_out</span> 比较 latency、MFU 和不同 expert 分布下的稳定性。补充候选并不是越多越好，而是要让搜索空间覆盖目标 shape 的计算/访存特征。</p>
+            <div class="metric-grid">
+              <div class="metric-card"><strong>+5.3%</strong><span>目标线上 shape 的脱敏加速</span><small>BEST CANDIDATE</small></div>
+              <div class="metric-card"><strong>SM90</strong><span>Hopper Tensor Core / TMA 路径</span><small>ARCH</small></div>
+              <div class="metric-card"><strong>Config-level</strong><span>不改数学语义，优化执行配置</span><small>LOW RISK</small></div>
+            </div>
+            <div class="callout warning"><strong>避免过拟合</strong><p>单个 shape 的最佳配置不一定适用于不同 rows 分布。最终应在多个 shape × 多种 expert 分布上比较，并评估 autotune 时间、二进制体积和运行时选择开销。</p></div>
+          </section>
+
+          <section id="analysis">
+            <span class="section-kicker">06 / Performance Reasoning</span>
+            <h2>我如何判断一个 Grouped GEMM 为什么慢</h2>
+            <div class="skill-groups">
+              <div class="skill-group"><h3>工作量是否真实</h3><p>rows、top-k、mask、compact、group count 与 expert 分布是否一致。</p></div>
+              <div class="skill-group"><h3>Kernel 是否吃满</h3><p>Tensor Core 利用率、occupancy、tile 浪费、长尾 group 与 launch overhead。</p></div>
+              <div class="skill-group"><h3>数据移动是否主导</h3><p>dispatch/combine、TMA、L2 命中、写回、epilogue 与中间 buffer。</p></div>
+              <div class="skill-group"><h3>系统是否干扰</h3><p>其他 stream、通信 overlap、频率、warm-up、CUDA Graph 与 range 边界。</p></div>
+            </div>
+          </section>
+
+          <section id="contribution">
+            <span class="section-kicker">07 / Contribution</span>
+            <h2>我的个人贡献</h2>
+            <ul>
+              <li>发现并修正 T×top-k 全展开 rows 与 DeepEP compact rows 混用的问题，避免 4×–6× 误判。</li>
+              <li>从线上 1024 条 forward range 构造本地回放，并量化代表性 shape 的线上/离线差异。</li>
+              <li>参与 Grouped GEMM 配置级调优，分析 MFU、latency 与 expert 分布之间的关系。</li>
+              <li>补充 SM90 autotune 候选，使一个目标线上 shape 获得约 5.3% 脱敏加速。</li>
+              <li>把 Profile 结论从“某 Kernel 很慢”升级为可验证的工作量、架构与系统解释。</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <span class="section-kicker">08 / Next</span>
+            <h2>下一步</h2>
+            <ol class="number-list">
+              <li>建立 shape × expert distribution × config 的自动化回归矩阵，减少人工挑选偏差。</li>
+              <li>把 Kernel latency、MFU 与端到端 step time 关联，量化局部优化的真实系统收益。</li>
+              <li>对比 H200 与 B200 上 Grouped GEMM 的 tile、TMA、Tensor Core 与 cluster 选择变化。</li>
+              <li>补充可公开的简化 replay 代码与 Nsight 分析截图。</li>
+            </ol>
+          </section>
+        </article>
+
+        <aside class="detail-sidebar">
+          <div class="sidebar-card"><h3>Contents</h3><nav class="toc"><a href="#problem">统计语义</a><a href="#pipeline">MoE 数据流</a><a href="#method">分析方法</a><a href="#replay">回放验证</a><a href="#tuning">配置调优</a><a href="#analysis">性能判断</a><a href="#contribution">个人贡献</a><a href="#next">下一步</a></nav></div>
+          <div class="sidebar-card"><h3>Key Facts</h3><ul class="sidebar-list"><li><span>GPU</span><strong>H200 / SM90</strong></li><li><span>Ranges</span><strong>1024 forward</strong></li><li><span>Error fixed</span><strong>4×–6×</strong></li><li><span>Target gain</span><strong>+5.3%</strong></li></ul></div>
+          <a class="button primary" href="../projects.html">返回全部项目</a>
+        </aside>
+      </div>
+    </section>
   </main>
-  <script>
-  (async () => {
-    const repo = 'tensorflow_musa_extension';
-    const parts = ['site.part01a.b64','site.part01b.b64','site.part01c.b64','site.part01d.b64','site.part02.b64','site.part03.b64','site.part04.b64'];
-    const segments = location.pathname.split('/').filter(Boolean);
-    const repoIndex = segments.indexOf(repo);
-    const base = repoIndex >= 0 ? '/' + segments.slice(0, repoIndex + 1).join('/') + '/' : '/';
-    try {
-      if (!('DecompressionStream' in window)) throw new Error('Browser does not support gzip streams');
-      const encoded = (await Promise.all(parts.map(async name => {
-        const response = await fetch(base + name, {cache: 'force-cache'});
-        if (!response.ok) throw new Error('Missing site bundle: ' + name);
-        return response.text();
-      }))).join('').replace(/\s/g, '');
 
-      const binary = atob(encoded);
-      const compressed = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) compressed[i] = binary.charCodeAt(i);
-      const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-      const archive = new Uint8Array(await new Response(stream).arrayBuffer());
-      const decoder = new TextDecoder();
-      const files = new Map();
-      const field = (start, length) => decoder.decode(archive.subarray(start, start + length)).split('\0')[0].trim();
-      let offset = 0;
-      while (offset + 512 <= archive.length) {
-        const name = field(offset, 100);
-        if (!name) break;
-        const prefix = field(offset + 345, 155);
-        const fullName = (prefix ? prefix + '/' : '') + name;
-        const size = parseInt(field(offset + 124, 12) || '0', 8) || 0;
-        const type = field(offset + 156, 1);
-        const dataStart = offset + 512;
-        if (!type || type === '0') files.set(fullName.replace(/^\.\//, ''), archive.slice(dataStart, dataStart + size));
-        offset = dataStart + Math.ceil(size / 512) * 512;
-      }
-
-      let requested = repoIndex >= 0 ? segments.slice(repoIndex + 1).join('/') : segments.join('/');
-      if (!requested || requested.endsWith('/')) requested += 'index.html';
-      if (!files.has(requested)) requested = '404.html';
-
-      const text = path => decoder.decode(files.get(path));
-      const objectUrl = (path, type) => URL.createObjectURL(new Blob([files.get(path)], {type}));
-      const cssUrl = objectUrl('styles.css', 'text/css');
-      const jsUrl = objectUrl('script.js', 'text/javascript');
-      const iconUrl = objectUrl('assets/favicon.svg', 'image/svg+xml');
-      const manifestUrl = objectUrl('assets/site.webmanifest', 'application/manifest+json');
-
-      let html = text(requested)
-        .replace(/href=(['"])(?:\.\.\/)?styles\.css\1/g, `href="${cssUrl}"`)
-        .replace(/src=(['"])(?:\.\.\/)?script\.js\1/g, `src="${jsUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/favicon\.svg\1/g, `href="${iconUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/site\.webmanifest\1/g, `href="${manifestUrl}"`);
-
-      document.open();
-      document.write(html);
-      document.close();
-    } catch (error) {
-      console.error(error);
-      document.querySelector('.bar').style.display = 'none';
-      document.querySelector('#error').style.display = 'block';
-    }
-  })();
-  </script>
+  <footer class="site-footer"><div class="shell footer-inner"><span>© <span data-year></span> Haoran Feng.</span><div class="footer-links"><a href="mailto:225010160@link.cuhk.edu.cn">Email</a><a href="https://github.com/XFDG" target="_blank" rel="noreferrer">GitHub</a><a href="../resume.html">Resume</a></div></div></footer>
 </body>
 </html>

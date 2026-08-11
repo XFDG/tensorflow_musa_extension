@@ -3,87 +3,172 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MoE Router Replay 训推路由一致性项目：实验设计、指标与脱敏结果。">
   <meta name="theme-color" content="#07090d">
-  <title>Haoran Feng — AI Infra Lab</title>
-  <style>
-    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07090d;color:#f2f5f7}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#183448 0,transparent 34%),#07090d}
-    main{width:min(680px,calc(100% - 40px));padding:48px;border:1px solid #ffffff1f;border-radius:24px;background:#0d121acc;box-shadow:0 28px 90px #0008}
-    .mark{width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#9db3ff,#78e3c5);color:#081016;font-weight:800;margin-bottom:28px}
-    h1{font-size:clamp(28px,6vw,48px);line-height:1.08;margin:0 0 16px}p{color:#aab4c2;line-height:1.75;margin:0}.bar{height:3px;background:#ffffff17;border-radius:99px;overflow:hidden;margin-top:30px}.bar::after{content:"";display:block;width:42%;height:100%;background:linear-gradient(90deg,#9db3ff,#78e3c5);animation:load 1.1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(140%)}}
-    a{color:#9db3ff}.error{display:none;margin-top:22px;color:#ffb7b7}
-  </style>
+  <title>MoE Router Replay — Haoran Feng</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../script.js" defer></script>
 </head>
-<body>
+<body data-page="projects">
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="../index.html"><span class="brand-mark">HF</span><span class="brand-copy">Haoran Feng <small>AI Infra Lab</small></span></a>
+      <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false"><span></span></button>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="../index.html" data-nav="home">首页</a><a href="../experience.html" data-nav="experience">经历</a><a href="../projects.html" data-nav="projects">项目</a><a href="../writing.html" data-nav="writing">文章</a><a href="../roadmap.html" data-nav="roadmap">Roadmap</a><a class="nav-cta" href="../resume.html" data-nav="resume">公开简历</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    <div class="mark">HF</div>
-    <h1>正在打开 Haoran's AI Infra Lab</h1>
-    <p>正在加载项目、经历与技术文章。首次访问只需下载一个约 40 KB 的站点包。</p>
-    <div class="bar" aria-label="加载中"></div>
-    <p class="error" id="error">页面加载失败。可以先访问 <a href="https://github.com/XFDG">GitHub</a>，或发送邮件至 <a href="mailto:225010160@link.cuhk.edu.cn">225010160@link.cuhk.edu.cn</a>。</p>
+    <section class="detail-hero">
+      <div class="shell">
+        <div class="detail-breadcrumbs reveal"><a href="../projects.html">Projects</a><span>/</span><span>MoE Router Replay</span></div>
+        <span class="eyebrow reveal">Flagship Project · RL Infra</span>
+        <h1 class="reveal"><span class="gradient-text">MoE Router Replay：建立训推路由一致性的正确性—性能—效果闭环。</span></h1>
+        <p class="detail-lead reveal">在 MoE 模型的 RL Post-training 链路中，rollout 与 training 可能因为执行路径、数值精度或实现差异选择不同 experts。这个项目不只验证 R3 Replay 是否让路由一致，还同时评估概率漂移、CUDA Graph、系统性能和训练稳定性。</p>
+        <div class="detail-meta-grid reveal">
+          <div class="detail-meta"><span>Role</span><strong>Experiment & Infra Engineering</strong></div>
+          <div class="detail-meta"><span>Environment</span><strong>8× NVIDIA H200 · TP=2</strong></div>
+          <div class="detail-meta"><span>Stack</span><strong>veRL · Megatron · vLLM</strong></div>
+          <div class="detail-meta"><span>Status</span><strong>脱敏案例 · 持续整理</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact section-line">
+      <div class="shell detail-layout">
+        <article class="detail-content">
+          <section id="problem">
+            <span class="section-kicker">01 / Problem</span>
+            <h2>问题不是“能不能 Replay”，而是“Replay 的路径是否真的与采样一致”。</h2>
+            <p>在 rollout 阶段，MoE Router 会为每个 token、每一层选择 top-k experts；训练阶段需要重新前向并计算 logprob、KL 和梯度。如果两侧 router 的 top-k 结果不同，训练使用的 token—expert 路径就偏离了采样时真实发生的路径，可能污染概率对齐与策略更新。</p>
+            <p>造成差异的来源可能同时存在：浮点数值误差、不同算子实现、执行顺序、CUDA Graph / compiled path、mask 处理、token 索引对齐或 replay 数据的通信与布局。</p>
+            <div class="callout"><strong>核心任务</strong><p>搭建 Baseline、R2 Record 与 R3 Replay 的可比实验，并将“路由是否一致”“概率是否更接近”“系统是否更快”“训练是否稳定”拆成独立但关联的指标层。</p></div>
+          </section>
+
+          <section id="architecture">
+            <span class="section-kicker">02 / System</span>
+            <h2>端到端数据流</h2>
+            <div class="architecture" aria-label="Router Replay 数据流">
+              <div class="arch-node"><strong>Rollout</strong><span>vLLM / SGLang</span></div>
+              <div class="arch-node"><strong>Route Record</strong><span>token-layer-topk</span></div>
+              <div class="arch-node"><strong>Transport</strong><span>mask / compact / sync</span></div>
+              <div class="arch-node"><strong>Training Replay</strong><span>Megatron-LM</span></div>
+              <div class="arch-node"><strong>Metrics</strong><span>route · logprob · reward</span></div>
+            </div>
+            <p>Rollout 侧采集 routed experts，训练侧按照 response mask 对指定 token/layer 进行 replay。为了避免“统计看起来一致但索引错位”，必须同时记录有效 token-layer 数量，并让 overlap/mismatch 的分母与 mask 语义一致。</p>
+          </section>
+
+          <section id="hypotheses">
+            <span class="section-kicker">03 / Hypotheses</span>
+            <h2>四个可被证伪的假设</h2>
+            <ol class="number-list">
+              <li><strong>H1 · 正确性：</strong>开启 R3 Replay 后，被 replay 的有效 token/layer 上 <span class="mono">route_mismatch_rate</span> 应接近 0，<span class="mono">topk_overlap</span> 应接近 1。</li>
+              <li><strong>H2 · 概率对齐：</strong>R3 相比 Baseline / R2 应显著降低 logprob drift；R2 只记录不重放，不应自动改善 drift。</li>
+              <li><strong>H3 · 性能：</strong>Replay 不应引入不可接受的记录、通信、拷贝或训练侧执行开销；CUDA Graph 的收益与限制需要单独消融。</li>
+              <li><strong>H4 · 训练效果：</strong>短程正确性成立后，长程 reward、KL、clipfrac 与 grad norm 至少不能明显退化。</li>
+            </ol>
+          </section>
+
+          <section id="experiment">
+            <span class="section-kicker">04 / Experiment</span>
+            <h2>对照实验与指标分层</h2>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Path</th><th>Route Behavior</th><th>CUDA Graph</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td>Baseline</td><td>不记录、不 Replay</td><td>FULL / Eager</td><td>建立原始训推差异基线</td></tr>
+                  <tr><td>R2 Record</td><td>Rollout 记录，训练侧不重放</td><td>FULL / Eager</td><td>分离“记录开销”和“Replay 收益”</td></tr>
+                  <tr><td>R3 Replay</td><td>Rollout 记录，训练侧重放</td><td>FULL / Eager</td><td>验证路由正确性、drift 与训练效果</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>指标层级</h3>
+            <div class="metric-grid">
+              <div class="metric-card"><strong>Correctness</strong><span>top-k overlap · mismatch · valid count</span><small>FIRST GATE</small></div>
+              <div class="metric-card"><strong>Probability</strong><span>f_tau_2 · KL · k3_kl · abs diff</span><small>ALIGNMENT</small></div>
+              <div class="metric-card"><strong>Performance</strong><span>step time · per-token latency · stage timing</span><small>COST</small></div>
+              <div class="metric-card"><strong>Training</strong><span>reward · val_core · clipfrac · grad norm</span><small>QUALITY</small></div>
+              <div class="metric-card"><strong>Reliability</strong><span>hang · timeout · metric_error</span><small>STABILITY</small></div>
+              <div class="metric-card"><strong>Resource</strong><span>GPU memory · communication · graph capture</span><small>SYSTEM</small></div>
+            </div>
+            <p>实验固定模型、数据、batch、采样参数、并行配置、随机种子、镜像、代码 commit 与 warm-up 区间。短程 5/25/50-step 用于快速验证，长程实验用于判断 reward 与稳定性。</p>
+          </section>
+
+          <section id="results">
+            <span class="section-kicker">05 / Results</span>
+            <h2>当前可公开的脱敏结果</h2>
+            <div class="metric-grid">
+              <div class="metric-card"><strong>1.0</strong><span>多组实验 top-k overlap</span><small>R3 REPLAY</small></div>
+              <div class="metric-card"><strong>0.0</strong><span>多组实验 route mismatch</span><small>VALID TOKENS</small></div>
+              <div class="metric-card"><strong>30×–46×</strong><span>R3 相比 Baseline 的 f_tau_2 改善</span><small>ANONYMIZED</small></div>
+              <div class="metric-card"><strong>77×</strong><span>15-step 独立对照的低漂移结果</span><small>ANONYMIZED</small></div>
+              <div class="metric-card"><strong>0</strong><span>eager 规避后的 hang / metric_error</span><small>5 / 25 / 50 STEP</small></div>
+              <div class="metric-card"><strong>≈2.4M–2.7M</strong><span>单步有效 token-layer 统计量</span><small>SANITY CHECK</small></div>
+            </div>
+            <div class="callout warning"><strong>结果边界</strong><p>上述数字用于说明正确性和概率对齐，不代表最终训练收益已经完全证明。长程 reward、性能成本和更多模型/配置的泛化验证仍应作为独立结论补齐。</p></div>
+          </section>
+
+          <section id="debugging">
+            <span class="section-kicker">06 / Debugging</span>
+            <h2>最重要的失败路径：CUDA Graph / compiled sampler 超时。</h2>
+            <p>在预验证阶段，采样路径出现 <span class="mono">sample_tokens timeout</span>。直接把问题归因于 Router Replay 会混淆变量，因此先切到 eager 模式，确认 Baseline / R2 / R3 在相同条件下能够稳定完成，再回到 CUDA Graph 路径定位 capture、动态输入与 sampler 实现的交互。</p>
+            <pre class="code-block">Observed:
+  compiled sampler / CUDA Graph path → sample_tokens timeout
+
+Isolation:
+  force eager execution
+  keep model, data, TP, sampling and metrics unchanged
+
+Result:
+  baseline / R2 / R3 → 0 hang, metric_error = 0
+
+Engineering decision:
+  correctness first; re-enable graph only after replay path is verified</pre>
+          </section>
+
+          <section id="contribution">
+            <span class="section-kicker">07 / Contribution</span>
+            <h2>我的个人贡献</h2>
+            <ul>
+              <li>打通并维护 Baseline、R2 与 R3 的多阶段对照流程，处理运行配置、异常定位与实验一致性。</li>
+              <li>设计训推路由一致性诊断闭环，统一 routed experts 的采集、response mask、指标分母与上报口径。</li>
+              <li>扩展 logprob drift 指标，对齐不同路径的 f_tau_2、KL、k3_kl 与 abs diff。</li>
+              <li>设计短程快速验证与长程训练实验，并将正确性、性能、质量和可靠性分层分析。</li>
+              <li>把结果整理为可用于简历、面试和技术文章的脱敏证据，而不是只保留在日志与面板中。</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <span class="section-kicker">08 / Next</span>
+            <h2>下一步验证</h2>
+            <ol class="number-list">
+              <li>补齐 R2 / R3 的长程 reward、KL、grad norm 与 validation 对照，确认概率对齐能否转化为训练收益。</li>
+              <li>拆分 Record、Transport、Replay 与 Metric 的时间成本，建立 per-token / per-stage 性能账本。</li>
+              <li>重新开启 CUDA Graph，最小化 capture 变量并确认 sampler timeout 根因。</li>
+              <li>扩展到不同 MoE 模型、top-k、并行配置和硬件环境，验证结论的可迁移性。</li>
+            </ol>
+          </section>
+        </article>
+
+        <aside class="detail-sidebar">
+          <div class="sidebar-card">
+            <h3>Contents</h3>
+            <nav class="toc"><a href="#problem">问题背景</a><a href="#architecture">系统数据流</a><a href="#hypotheses">核心假设</a><a href="#experiment">实验设计</a><a href="#results">脱敏结果</a><a href="#debugging">失败路径</a><a href="#contribution">个人贡献</a><a href="#next">下一步</a></nav>
+          </div>
+          <div class="sidebar-card">
+            <h3>Key Facts</h3>
+            <ul class="sidebar-list"><li><span>GPU</span><strong>8×H200</strong></li><li><span>Parallel</span><strong>TP=2</strong></li><li><span>Paths</span><strong>Baseline / R2 / R3</strong></li><li><span>Main unit</span><strong>token-layer-topk</strong></li></ul>
+          </div>
+          <a class="button primary" href="../projects.html">返回全部项目</a>
+        </aside>
+      </div>
+    </section>
   </main>
-  <script>
-  (async () => {
-    const repo = 'tensorflow_musa_extension';
-    const parts = ['site.part01a.b64','site.part01b.b64','site.part01c.b64','site.part01d.b64','site.part02.b64','site.part03.b64','site.part04.b64'];
-    const segments = location.pathname.split('/').filter(Boolean);
-    const repoIndex = segments.indexOf(repo);
-    const base = repoIndex >= 0 ? '/' + segments.slice(0, repoIndex + 1).join('/') + '/' : '/';
-    try {
-      if (!('DecompressionStream' in window)) throw new Error('Browser does not support gzip streams');
-      const encoded = (await Promise.all(parts.map(async name => {
-        const response = await fetch(base + name, {cache: 'force-cache'});
-        if (!response.ok) throw new Error('Missing site bundle: ' + name);
-        return response.text();
-      }))).join('').replace(/\s/g, '');
 
-      const binary = atob(encoded);
-      const compressed = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) compressed[i] = binary.charCodeAt(i);
-      const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-      const archive = new Uint8Array(await new Response(stream).arrayBuffer());
-      const decoder = new TextDecoder();
-      const files = new Map();
-      const field = (start, length) => decoder.decode(archive.subarray(start, start + length)).split('\0')[0].trim();
-      let offset = 0;
-      while (offset + 512 <= archive.length) {
-        const name = field(offset, 100);
-        if (!name) break;
-        const prefix = field(offset + 345, 155);
-        const fullName = (prefix ? prefix + '/' : '') + name;
-        const size = parseInt(field(offset + 124, 12) || '0', 8) || 0;
-        const type = field(offset + 156, 1);
-        const dataStart = offset + 512;
-        if (!type || type === '0') files.set(fullName.replace(/^\.\//, ''), archive.slice(dataStart, dataStart + size));
-        offset = dataStart + Math.ceil(size / 512) * 512;
-      }
-
-      let requested = repoIndex >= 0 ? segments.slice(repoIndex + 1).join('/') : segments.join('/');
-      if (!requested || requested.endsWith('/')) requested += 'index.html';
-      if (!files.has(requested)) requested = '404.html';
-
-      const text = path => decoder.decode(files.get(path));
-      const objectUrl = (path, type) => URL.createObjectURL(new Blob([files.get(path)], {type}));
-      const cssUrl = objectUrl('styles.css', 'text/css');
-      const jsUrl = objectUrl('script.js', 'text/javascript');
-      const iconUrl = objectUrl('assets/favicon.svg', 'image/svg+xml');
-      const manifestUrl = objectUrl('assets/site.webmanifest', 'application/manifest+json');
-
-      let html = text(requested)
-        .replace(/href=(['"])(?:\.\.\/)?styles\.css\1/g, `href="${cssUrl}"`)
-        .replace(/src=(['"])(?:\.\.\/)?script\.js\1/g, `src="${jsUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/favicon\.svg\1/g, `href="${iconUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/site\.webmanifest\1/g, `href="${manifestUrl}"`);
-
-      document.open();
-      document.write(html);
-      document.close();
-    } catch (error) {
-      console.error(error);
-      document.querySelector('.bar').style.display = 'none';
-      document.querySelector('#error').style.display = 'block';
-    }
-  })();
-  </script>
+  <footer class="site-footer"><div class="shell footer-inner"><span>© <span data-year></span> Haoran Feng.</span><div class="footer-links"><a href="mailto:225010160@link.cuhk.edu.cn">Email</a><a href="https://github.com/XFDG" target="_blank" rel="noreferrer">GitHub</a><a href="../resume.html">Resume</a></div></div></footer>
 </body>
 </html>

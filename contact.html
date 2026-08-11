@@ -3,87 +3,99 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="联系冯浩然：AI Infra、大模型训练推理、GPU 性能工程、实习与开源协作。">
   <meta name="theme-color" content="#07090d">
-  <title>Haoran Feng — AI Infra Lab</title>
-  <style>
-    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07090d;color:#f2f5f7}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#183448 0,transparent 34%),#07090d}
-    main{width:min(680px,calc(100% - 40px));padding:48px;border:1px solid #ffffff1f;border-radius:24px;background:#0d121acc;box-shadow:0 28px 90px #0008}
-    .mark{width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#9db3ff,#78e3c5);color:#081016;font-weight:800;margin-bottom:28px}
-    h1{font-size:clamp(28px,6vw,48px);line-height:1.08;margin:0 0 16px}p{color:#aab4c2;line-height:1.75;margin:0}.bar{height:3px;background:#ffffff17;border-radius:99px;overflow:hidden;margin-top:30px}.bar::after{content:"";display:block;width:42%;height:100%;background:linear-gradient(90deg,#9db3ff,#78e3c5);animation:load 1.1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(140%)}}
-    a{color:#9db3ff}.error{display:none;margin-top:22px;color:#ffb7b7}
-  </style>
+  <title>联系 — Haoran Feng</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="assets/site.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
-<body>
+<body data-page="contact">
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="返回首页"><span class="brand-mark">HF</span><span class="brand-copy">Haoran Feng <small>AI Infra Lab</small></span></a>
+      <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false"><span></span></button>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html" data-nav="home">首页</a><a href="experience.html" data-nav="experience">经历</a><a href="projects.html" data-nav="projects">项目</a><a href="writing.html" data-nav="writing">文章</a><a href="roadmap.html" data-nav="roadmap">Roadmap</a><a href="contact.html" data-nav="contact">联系</a><a class="nav-cta" href="resume.html" data-nav="resume">公开简历</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    <div class="mark">HF</div>
-    <h1>正在打开 Haoran's AI Infra Lab</h1>
-    <p>正在加载项目、经历与技术文章。首次访问只需下载一个约 40 KB 的站点包。</p>
-    <div class="bar" aria-label="加载中"></div>
-    <p class="error" id="error">页面加载失败。可以先访问 <a href="https://github.com/XFDG">GitHub</a>，或发送邮件至 <a href="mailto:225010160@link.cuhk.edu.cn">225010160@link.cuhk.edu.cn</a>。</p>
+    <section class="page-hero">
+      <div class="shell page-hero-grid">
+        <div class="reveal">
+          <span class="eyebrow">Contact & Collaboration</span>
+          <h1><span class="gradient-text">一起讨论更快、更稳、更可信的大模型系统。</span></h1>
+          <p class="page-lead">欢迎交流 AI Infra、LLM 训练推理、RL Post-training、GPU Kernel 与性能工程。正式事项建议使用邮件；代码、开源贡献和技术项目可以从 GitHub 开始。</p>
+        </div>
+        <aside class="page-aside reveal">
+          <span class="page-aside-label">Current Status</span>
+          <strong>2027 届 · Open to AI Infra Opportunities</strong>
+          <p>关注大模型训练推理、推理优化、框架后端、GPU 算子与性能工程相关机会。</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section compact section-line">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><span class="section-kicker">Direct Contact / 直接联系</span><h2>两个清晰、可验证的公开入口。</h2></div>
+          <p>邮箱承载正式沟通，GitHub 展示代码、PR 与开源轨迹。网站不会公开手机号或内部工作账号。</p>
+        </div>
+
+        <div class="contact-grid">
+          <article class="contact-card reveal">
+            <div class="contact-card-top"><span class="contact-symbol" aria-hidden="true">@</span><span class="badge research">PRIMARY</span></div>
+            <span class="contact-label">Email</span>
+            <h3>225010160@link.cuhk.edu.cn</h3>
+            <p>适合实习与校招机会、技术合作、正式沟通和较完整的问题描述。</p>
+            <div class="contact-actions">
+              <a class="button primary" href="mailto:225010160@link.cuhk.edu.cn">发送邮件</a>
+              <button class="button" type="button" data-copy-email="225010160@link.cuhk.edu.cn">复制邮箱</button>
+            </div>
+          </article>
+
+          <article class="contact-card reveal">
+            <div class="contact-card-top"><span class="contact-symbol" aria-hidden="true">GH</span><span class="badge opensource">OPEN SOURCE</span></div>
+            <span class="contact-label">GitHub</span>
+            <h3>github.com/XFDG</h3>
+            <p>查看公开代码、TensorFlow MUSA 贡献记录，以及后续发布的 AI Infra 实验与 Benchmark。</p>
+            <div class="contact-actions">
+              <a class="button primary" href="https://github.com/XFDG" target="_blank" rel="noreferrer">访问 GitHub ↗</a>
+              <a class="button" href="projects.html">查看项目</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-title-row reveal">
+          <div><span class="section-kicker">Good Topics / 适合交流</span><h2>我目前最愿意深入讨论的方向。</h2></div>
+        </div>
+        <div class="contact-topic-grid">
+          <article class="card reveal"><span class="project-number">01 · SYSTEMS</span><h3>LLM 训练与推理系统</h3><p>veRL、Megatron-LM、vLLM、SGLang、MoE Router Replay，以及训推一致性与 RL Post-training Infra。</p></article>
+          <article class="card reveal"><span class="project-number">02 · PERFORMANCE</span><h3>GPU 性能与算子优化</h3><p>CUDA、CUTLASS、DeepGEMM、Grouped GEMM、CUDA Graph、Profiling 与从 Shape 到 Kernel 的性能闭环。</p></article>
+          <article class="card reveal"><span class="project-number">03 · OPPORTUNITY</span><h3>实习、校招与开源协作</h3><p>面向 AI Infra、推理优化、框架后端和 GPU 性能工程的机会，也欢迎围绕公开项目进行协作。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="cta-panel reveal">
+          <div><span class="section-kicker">A Useful First Message</span><h2>让第一次沟通更高效。</h2><p>邮件中可以简单说明你的身份、希望讨论的主题、相关链接，以及期望我回复的问题。涉及项目合作时，最好附上代码仓库、复现步骤或性能数据。</p></div>
+          <div class="button-row"><a class="button primary" href="mailto:225010160@link.cuhk.edu.cn?subject=AI%20Infra%20交流">写一封邮件</a><a class="button" href="https://github.com/XFDG" target="_blank" rel="noreferrer">查看 GitHub ↗</a></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <script>
-  (async () => {
-    const repo = 'tensorflow_musa_extension';
-    const parts = ['site.part01a.b64','site.part01b.b64','site.part01c.b64','site.part01d.b64','site.part02.b64','site.part03.b64','site.part04.b64'];
-    const segments = location.pathname.split('/').filter(Boolean);
-    const repoIndex = segments.indexOf(repo);
-    const base = repoIndex >= 0 ? '/' + segments.slice(0, repoIndex + 1).join('/') + '/' : '/';
-    try {
-      if (!('DecompressionStream' in window)) throw new Error('Browser does not support gzip streams');
-      const encoded = (await Promise.all(parts.map(async name => {
-        const response = await fetch(base + name, {cache: 'force-cache'});
-        if (!response.ok) throw new Error('Missing site bundle: ' + name);
-        return response.text();
-      }))).join('').replace(/\s/g, '');
 
-      const binary = atob(encoded);
-      const compressed = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) compressed[i] = binary.charCodeAt(i);
-      const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-      const archive = new Uint8Array(await new Response(stream).arrayBuffer());
-      const decoder = new TextDecoder();
-      const files = new Map();
-      const field = (start, length) => decoder.decode(archive.subarray(start, start + length)).split('\0')[0].trim();
-      let offset = 0;
-      while (offset + 512 <= archive.length) {
-        const name = field(offset, 100);
-        if (!name) break;
-        const prefix = field(offset + 345, 155);
-        const fullName = (prefix ? prefix + '/' : '') + name;
-        const size = parseInt(field(offset + 124, 12) || '0', 8) || 0;
-        const type = field(offset + 156, 1);
-        const dataStart = offset + 512;
-        if (!type || type === '0') files.set(fullName.replace(/^\.\//, ''), archive.slice(dataStart, dataStart + size));
-        offset = dataStart + Math.ceil(size / 512) * 512;
-      }
-
-      let requested = repoIndex >= 0 ? segments.slice(repoIndex + 1).join('/') : segments.join('/');
-      if (!requested || requested.endsWith('/')) requested += 'index.html';
-      if (!files.has(requested)) requested = '404.html';
-
-      const text = path => decoder.decode(files.get(path));
-      const objectUrl = (path, type) => URL.createObjectURL(new Blob([files.get(path)], {type}));
-      const cssUrl = objectUrl('styles.css', 'text/css');
-      const jsUrl = objectUrl('script.js', 'text/javascript');
-      const iconUrl = objectUrl('assets/favicon.svg', 'image/svg+xml');
-      const manifestUrl = objectUrl('assets/site.webmanifest', 'application/manifest+json');
-
-      let html = text(requested)
-        .replace(/href=(['"])(?:\.\.\/)?styles\.css\1/g, `href="${cssUrl}"`)
-        .replace(/src=(['"])(?:\.\.\/)?script\.js\1/g, `src="${jsUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/favicon\.svg\1/g, `href="${iconUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/site\.webmanifest\1/g, `href="${manifestUrl}"`);
-
-      document.open();
-      document.write(html);
-      document.close();
-    } catch (error) {
-      console.error(error);
-      document.querySelector('.bar').style.display = 'none';
-      document.querySelector('#error').style.display = 'block';
-    }
-  })();
-  </script>
+  <footer class="site-footer">
+    <div class="shell footer-inner"><span>© <span data-year></span> Haoran Feng.</span><div class="footer-links"><a href="contact.html">Contact</a><a href="mailto:225010160@link.cuhk.edu.cn">Email</a><a href="https://github.com/XFDG" target="_blank" rel="noreferrer">GitHub</a><a href="resume.html">Resume</a></div></div>
+  </footer>
 </body>
 </html>

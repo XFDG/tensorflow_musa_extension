@@ -3,87 +3,166 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="冯浩然的教育背景、工作经历与 AI Infra 技术能力时间线。">
   <meta name="theme-color" content="#07090d">
-  <title>Haoran Feng — AI Infra Lab</title>
-  <style>
-    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07090d;color:#f2f5f7}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#183448 0,transparent 34%),#07090d}
-    main{width:min(680px,calc(100% - 40px));padding:48px;border:1px solid #ffffff1f;border-radius:24px;background:#0d121acc;box-shadow:0 28px 90px #0008}
-    .mark{width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#9db3ff,#78e3c5);color:#081016;font-weight:800;margin-bottom:28px}
-    h1{font-size:clamp(28px,6vw,48px);line-height:1.08;margin:0 0 16px}p{color:#aab4c2;line-height:1.75;margin:0}.bar{height:3px;background:#ffffff17;border-radius:99px;overflow:hidden;margin-top:30px}.bar::after{content:"";display:block;width:42%;height:100%;background:linear-gradient(90deg,#9db3ff,#78e3c5);animation:load 1.1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(140%)}}
-    a{color:#9db3ff}.error{display:none;margin-top:22px;color:#ffb7b7}
-  </style>
+  <title>经历 — Haoran Feng</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
-<body>
+<body data-page="experience">
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">HF</span><span class="brand-copy">Haoran Feng <small>AI Infra Lab</small></span></a>
+      <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false"><span></span></button>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html" data-nav="home">首页</a><a href="experience.html" data-nav="experience">经历</a><a href="projects.html" data-nav="projects">项目</a><a href="writing.html" data-nav="writing">文章</a><a href="roadmap.html" data-nav="roadmap">Roadmap</a><a href="contact.html" data-nav="contact">联系</a><a class="nav-cta" href="resume.html" data-nav="resume">公开简历</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    <div class="mark">HF</div>
-    <h1>正在打开 Haoran's AI Infra Lab</h1>
-    <p>正在加载项目、经历与技术文章。首次访问只需下载一个约 40 KB 的站点包。</p>
-    <div class="bar" aria-label="加载中"></div>
-    <p class="error" id="error">页面加载失败。可以先访问 <a href="https://github.com/XFDG">GitHub</a>，或发送邮件至 <a href="mailto:225010160@link.cuhk.edu.cn">225010160@link.cuhk.edu.cn</a>。</p>
+    <section class="page-hero">
+      <div class="shell page-hero-grid">
+        <div class="reveal">
+          <span class="eyebrow">Experience & Education</span>
+          <h1><span class="gradient-text">从软硬件交叉基础，走到大模型系统与 GPU 性能。</span></h1>
+          <p class="page-lead">这不是一份把岗位名称按时间堆叠的简历，而是一条能力逐步下沉的路线：大型工程 → 异构框架后端 → 推理 Runtime → RL Post-training Infra → GPU Kernel 与系统协同。</p>
+        </div>
+        <aside class="page-aside reveal">
+          <span class="page-aside-label">Current Positioning</span>
+          <strong>AI Infra / LLM Systems / GPU Performance</strong>
+          <p>2027 届硕士，重点面向大模型训练推理、算子优化、框架后端与性能工程岗位。</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section compact section-line">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><span class="section-kicker">Education / 教育背景</span><h2>电子、计算机与集成电路的交叉训练。</h2></div>
+          <p>这样的背景让我能够在模型、框架、运行时、体系结构和 Kernel 之间建立更完整的因果链。</p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card">
+              <div class="timeline-heading">
+                <div><h3>香港中文大学（深圳）</h3><span class="timeline-company">集成电路与系统 · 硕士</span></div>
+                <span class="timeline-date">2025.09 — 2027.06（预计）</span>
+              </div>
+              <p>研究与学习重点逐步转向数字系统、计算机体系结构、GPU 计算与 AI Infra，持续围绕大模型训练推理系统开展工程实践。</p>
+              <div class="tag-list"><span class="tag">Integrated Circuits</span><span class="tag">Computer Architecture</span><span class="tag">AI Infra</span><span class="tag">Matrix Analysis</span></div>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card">
+              <div class="timeline-heading">
+                <div><h3>山东大学</h3><span class="timeline-company">电子科学与技术 · 本科；计算机科学与技术 · 辅修</span></div>
+                <span class="timeline-date">2021.09 — 2025.06</span>
+              </div>
+              <p>建立模数电、微机、FPGA、嵌入式和 DSP 基础，同时系统学习数据结构、计算机网络、数据库、离散数学与面向对象程序设计。获得学业奖学金与竞赛创新类特长奖学金。</p>
+              <div class="tag-list"><span class="tag">Electronics</span><span class="tag">C/C++</span><span class="tag">FPGA</span><span class="tag">Embedded Systems</span><span class="tag">Computer Science</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><span class="section-kicker">Work / 工作经历</span><h2>每一段经历，都补上了系统链路中的一块拼图。</h2></div>
+          <p>当前企业项目采用脱敏表达；公开开源贡献保留可验证链接，内部地址、代码仓和敏感绝对数据不展示。</p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card">
+              <div class="timeline-heading">
+                <div><h3>LLM Post-training & Inference Infrastructure</h3><span class="timeline-company">企业 AI Infra 项目 · 脱敏展示</span></div>
+                <span class="timeline-date">2026.05 — 2026.07</span>
+              </div>
+              <p>在 8×H200 环境中，围绕 veRL + Megatron-LM + vLLM/SGLang 的 MoE-RL 链路开展 Router Replay、logprob drift、CUDA Graph、Grouped GEMM 与线上/离线 profile 对齐工作。</p>
+              <ul class="check-list" style="margin-top:18px">
+                <li class="done">打通 Baseline / R2 Record / R3 Replay 的多阶段对照实验，并定位 CUDA Graph / compiled sampler 路径导致的超时问题。</li>
+                <li class="done">建立 token-layer-topk 粒度的路由一致性指标，统一 top-k overlap、mismatch、有效 token-layer 数量与概率漂移口径。</li>
+                <li class="done">对齐 MoE GEMM rows 语义，构造本地回放并参与 SM90 config-level tuning。</li>
+              </ul>
+              <div class="tag-list"><span class="tag">veRL</span><span class="tag">Megatron-LM</span><span class="tag">vLLM</span><span class="tag">SGLang</span><span class="tag">H200</span><span class="tag">MoE</span><span class="tag">CUDA Graph</span><span class="tag">Nsight</span></div>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card">
+              <div class="timeline-heading">
+                <div><h3>算子与编译器优化实习生</h3><span class="timeline-company">摩尔线程 · TensorFlow MUSA Extension</span></div>
+                <span class="timeline-date">2026.02 — 2026.05</span>
+              </div>
+              <p>参与国产 GPU 上 TensorFlow 后端的算子支持、插件集成、图优化、稳定性修复和性能工具建设，直接处理框架语义与 Device Kernel 之间的问题。</p>
+              <ul class="check-list" style="margin-top:18px">
+                <li class="done">完成 muDNN GELU 接入、Fusion 链路修复与 benchmark 建设，推动整网 11 个 GELU 全部融合。</li>
+                <li class="done">定位 shape tensor 错误进入 device path 的根因，重构 HostMemory 配置并修复长跑 OOM / 随机崩溃。</li>
+                <li class="done">设计 Kernel Timing 宏与轻量调试机制，公开 PR #57 已合入主仓库。</li>
+                <li class="done">优化 Logical_Or scalar broadcast 热点路径，并参与 AddV2 等热点算子与训练算子结果对齐。</li>
+              </ul>
+              <div class="button-row" style="margin-top:20px">
+                <a class="button small" href="projects/musa-extension.html">查看完整案例</a>
+                <a class="button small" href="https://github.com/MooreThreads/tensorflow_musa_extension/pull/57" target="_blank" rel="noreferrer">公开 PR #57 ↗</a>
+              </div>
+              <div class="tag-list"><span class="tag">TensorFlow</span><span class="tag">MUSA</span><span class="tag">C++</span><span class="tag">muDNN</span><span class="tag">Fusion</span><span class="tag">HostMemory</span><span class="tag">Benchmark</span></div>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card">
+              <div class="timeline-heading">
+                <div><h3>通用软件工程师实习生</h3><span class="timeline-company">华为 · 大型 C/C++ 工程与静态分析工具链</span></div>
+                <span class="timeline-date">2024.08 — 2024.12</span>
+              </div>
+              <p>维护大规模 C/C++ 代码库静态分析工具链，通过日志分析、规则重构和 Python 自动化开发支持规则快速迭代，建立大型工程中的代码阅读、测试、CI 与协作基础。</p>
+              <ul class="check-list" style="margin-top:18px">
+                <li class="done">通过日志分析与规则重构，将核心场景误报率降低约 35%。</li>
+                <li class="done">开发 Python 自动化代码生成工具，将规则开发与验证周期缩短约 40%，支持 60+ 条核心规则迭代。</li>
+              </ul>
+              <div class="tag-list"><span class="tag">C/C++</span><span class="tag">Python</span><span class="tag">Static Analysis</span><span class="tag">CI/CD</span><span class="tag">Network Software</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><span class="section-kicker">Capabilities / 能力矩阵</span><h2>围绕“系统为什么慢、为什么不一致、怎样验证”组织技能。</h2></div>
+          <p>技能不按熟悉度百分比打分，而按能够拿出什么工程证据进行归类。</p>
+        </div>
+        <div class="skill-groups">
+          <div class="skill-group reveal"><h3>训练与推理系统</h3><div class="tag-list"><span class="tag">veRL</span><span class="tag">Megatron-LM</span><span class="tag">vLLM</span><span class="tag">SGLang</span><span class="tag">MoE</span><span class="tag">PPO / GRPO</span><span class="tag">CUDA Graph</span></div></div>
+          <div class="skill-group reveal"><h3>GPU 与算子性能</h3><div class="tag-list"><span class="tag">CUDA</span><span class="tag">CUTLASS</span><span class="tag">CuTe</span><span class="tag">DeepGEMM</span><span class="tag">Grouped GEMM</span><span class="tag">Nsight Systems</span><span class="tag">Nsight Compute</span></div></div>
+          <div class="skill-group reveal"><h3>框架后端与异构适配</h3><div class="tag-list"><span class="tag">TensorFlow Extension</span><span class="tag">PyTorch Extension</span><span class="tag">MUSA</span><span class="tag">Operator Registration</span><span class="tag">Graph Fusion</span><span class="tag">Host / Device Semantics</span></div></div>
+          <div class="skill-group reveal"><h3>工程与实验方法</h3><div class="tag-list"><span class="tag">C++</span><span class="tag">Python</span><span class="tag">Linux</span><span class="tag">Docker</span><span class="tag">Git</span><span class="tag">Benchmark</span><span class="tag">Ablation</span><span class="tag">Reproducibility</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="cta-panel reveal">
+          <div><span class="section-kicker">Next / 下一步</span><h2>继续把经历转化为可验证、可讨论的公开作品。</h2><p>核心项目页面已经呈现 Router Replay、MoE GEMM Profiling、TensorFlow MUSA 与量化 Runtime；后续将持续补充实验曲线、代码与文章。</p></div>
+          <div class="button-row"><a class="button primary" href="projects.html">查看项目</a><a class="button" href="resume.html">公开简历</a></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <script>
-  (async () => {
-    const repo = 'tensorflow_musa_extension';
-    const parts = ['site.part01a.b64','site.part01b.b64','site.part01c.b64','site.part01d.b64','site.part02.b64','site.part03.b64','site.part04.b64'];
-    const segments = location.pathname.split('/').filter(Boolean);
-    const repoIndex = segments.indexOf(repo);
-    const base = repoIndex >= 0 ? '/' + segments.slice(0, repoIndex + 1).join('/') + '/' : '/';
-    try {
-      if (!('DecompressionStream' in window)) throw new Error('Browser does not support gzip streams');
-      const encoded = (await Promise.all(parts.map(async name => {
-        const response = await fetch(base + name, {cache: 'force-cache'});
-        if (!response.ok) throw new Error('Missing site bundle: ' + name);
-        return response.text();
-      }))).join('').replace(/\s/g, '');
 
-      const binary = atob(encoded);
-      const compressed = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) compressed[i] = binary.charCodeAt(i);
-      const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-      const archive = new Uint8Array(await new Response(stream).arrayBuffer());
-      const decoder = new TextDecoder();
-      const files = new Map();
-      const field = (start, length) => decoder.decode(archive.subarray(start, start + length)).split('\0')[0].trim();
-      let offset = 0;
-      while (offset + 512 <= archive.length) {
-        const name = field(offset, 100);
-        if (!name) break;
-        const prefix = field(offset + 345, 155);
-        const fullName = (prefix ? prefix + '/' : '') + name;
-        const size = parseInt(field(offset + 124, 12) || '0', 8) || 0;
-        const type = field(offset + 156, 1);
-        const dataStart = offset + 512;
-        if (!type || type === '0') files.set(fullName.replace(/^\.\//, ''), archive.slice(dataStart, dataStart + size));
-        offset = dataStart + Math.ceil(size / 512) * 512;
-      }
-
-      let requested = repoIndex >= 0 ? segments.slice(repoIndex + 1).join('/') : segments.join('/');
-      if (!requested || requested.endsWith('/')) requested += 'index.html';
-      if (!files.has(requested)) requested = '404.html';
-
-      const text = path => decoder.decode(files.get(path));
-      const objectUrl = (path, type) => URL.createObjectURL(new Blob([files.get(path)], {type}));
-      const cssUrl = objectUrl('styles.css', 'text/css');
-      const jsUrl = objectUrl('script.js', 'text/javascript');
-      const iconUrl = objectUrl('assets/favicon.svg', 'image/svg+xml');
-      const manifestUrl = objectUrl('assets/site.webmanifest', 'application/manifest+json');
-
-      let html = text(requested)
-        .replace(/href=(['"])(?:\.\.\/)?styles\.css\1/g, `href="${cssUrl}"`)
-        .replace(/src=(['"])(?:\.\.\/)?script\.js\1/g, `src="${jsUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/favicon\.svg\1/g, `href="${iconUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/site\.webmanifest\1/g, `href="${manifestUrl}"`);
-
-      document.open();
-      document.write(html);
-      document.close();
-    } catch (error) {
-      console.error(error);
-      document.querySelector('.bar').style.display = 'none';
-      document.querySelector('#error').style.display = 'block';
-    }
-  })();
-  </script>
+  <footer class="site-footer"><div class="shell footer-inner"><span>© <span data-year></span> Haoran Feng.</span><div class="footer-links"><a href="mailto:225010160@link.cuhk.edu.cn">Email</a><a href="https://github.com/XFDG" target="_blank" rel="noreferrer">GitHub</a><a href="resume.html">Resume</a></div></div></footer>
 </body>
 </html>

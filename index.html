@@ -3,87 +3,342 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="冯浩然的 AI Infra 个人网站：大模型训练推理系统、RL Infra、GPU 算子与性能工程。">
   <meta name="theme-color" content="#07090d">
   <title>Haoran Feng — AI Infra Lab</title>
-  <style>
-    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07090d;color:#f2f5f7}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#183448 0,transparent 34%),#07090d}
-    main{width:min(680px,calc(100% - 40px));padding:48px;border:1px solid #ffffff1f;border-radius:24px;background:#0d121acc;box-shadow:0 28px 90px #0008}
-    .mark{width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#9db3ff,#78e3c5);color:#081016;font-weight:800;margin-bottom:28px}
-    h1{font-size:clamp(28px,6vw,48px);line-height:1.08;margin:0 0 16px}p{color:#aab4c2;line-height:1.75;margin:0}.bar{height:3px;background:#ffffff17;border-radius:99px;overflow:hidden;margin-top:30px}.bar::after{content:"";display:block;width:42%;height:100%;background:linear-gradient(90deg,#9db3ff,#78e3c5);animation:load 1.1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(140%)}}
-    a{color:#9db3ff}.error{display:none;margin-top:22px;color:#ffb7b7}
-  </style>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="assets/site.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
-<body>
+<body data-page="home">
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="返回首页">
+        <span class="brand-mark">HF</span>
+        <span class="brand-copy">Haoran Feng <small>AI Infra Lab</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false"><span></span></button>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html" data-nav="home">首页</a>
+        <a href="experience.html" data-nav="experience">经历</a>
+        <a href="projects.html" data-nav="projects">项目</a>
+        <a href="writing.html" data-nav="writing">文章</a>
+        <a href="roadmap.html" data-nav="roadmap">Roadmap</a>
+        <a href="contact.html" data-nav="contact">联系</a>
+        <a class="nav-cta" href="resume.html" data-nav="resume">公开简历</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    <div class="mark">HF</div>
-    <h1>正在打开 Haoran's AI Infra Lab</h1>
-    <p>正在加载项目、经历与技术文章。首次访问只需下载一个约 40 KB 的站点包。</p>
-    <div class="bar" aria-label="加载中"></div>
-    <p class="error" id="error">页面加载失败。可以先访问 <a href="https://github.com/XFDG">GitHub</a>，或发送邮件至 <a href="mailto:225010160@link.cuhk.edu.cn">225010160@link.cuhk.edu.cn</a>。</p>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy reveal">
+          <span class="eyebrow">AI Infrastructure · LLM Systems · GPU Performance</span>
+          <h1><span class="gradient-text">把复杂的大模型系统，做得更快、更稳、更可信。</span></h1>
+          <p class="hero-lead">
+            我是冯浩然，香港中文大学（深圳）集成电路与系统硕士在读。我的工作横跨大模型训练推理系统、RL Post-training Infra、GPU 算子与异构计算，关注从框架语义到 Kernel 执行的完整性能链路。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="projects.html">查看核心项目 <span aria-hidden="true">↗</span></a>
+            <a class="button" href="experience.html">了解我的经历 <span aria-hidden="true">→</span></a>
+            <a class="button" href="contact.html">联系我 <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="hero-links" aria-label="公开联系方式">
+            <a href="mailto:225010160@link.cuhk.edu.cn"><span aria-hidden="true">✉</span> 225010160@link.cuhk.edu.cn</a>
+            <a href="https://github.com/XFDG" target="_blank" rel="noreferrer"><span aria-hidden="true">↗</span> github.com/XFDG</a>
+          </div>
+          <div class="hero-meta">
+            <span><i class="status-dot"></i> 2027 届 · 面向 AI Infra / 推理优化机会</span>
+            <span>深圳 / 北京</span>
+          </div>
+        </div>
+
+        <div class="terminal reveal" aria-label="个人技术概览">
+          <div class="terminal-bar">
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-title">haoran@ai-infra:~</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-block">
+              <span class="terminal-command">whoami</span>
+              <div class="terminal-output"><strong>Haoran Feng / 冯浩然</strong><br>M.Sc. in Integrated Circuits & Systems</div>
+            </div>
+            <div class="terminal-block">
+              <span class="terminal-command">focus --current</span>
+              <div class="terminal-output">LLM post-training infra<br>inference systems<br>GPU performance engineering</div>
+            </div>
+            <div class="terminal-block">
+              <span class="terminal-command">stack --show</span>
+              <div class="terminal-tags">
+                <span>veRL</span><span>Megatron-LM</span><span>vLLM</span><span>SGLang</span><span>CUDA</span><span>CUTLASS</span><span>DeepGEMM</span><span>TensorFlow MUSA</span>
+              </div>
+            </div>
+            <div class="terminal-block">
+              <span class="terminal-command">methodology</span>
+              <div class="terminal-output">problem → hypothesis → experiment → data → decision</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="shell">
+        <div class="stats-grid reveal" aria-label="技术概览数据">
+          <div class="stat"><span class="stat-value">8×H200</span><span class="stat-label">多卡 MoE / RL 实验环境</span></div>
+          <div class="stat"><span class="stat-value">1</span><span class="stat-label">已合入公开开源 PR</span></div>
+          <div class="stat"><span class="stat-value">4</span><span class="stat-label">长期技术主线</span></div>
+          <div class="stat"><span class="stat-value">2027</span><span class="stat-label">硕士预计毕业</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line" id="about">
+      <div class="shell intro-grid">
+        <div class="intro-copy reveal">
+          <span class="section-kicker">About / 关于我</span>
+          <h2>从电子与计算机基础，走向大模型系统的性能深水区。</h2>
+          <p>
+            本科阶段，我同时接受了电子科学与计算机科学训练；之后从 C/C++ 工程、国产 GPU 框架适配与算子优化切入，逐步进入 vLLM、DeepGEMM、veRL、Megatron-LM 与 MoE 系统。现在，我更关注一个问题：如何让训练侧、推理侧和底层 Kernel 形成可验证的性能闭环。
+          </p>
+          <p>
+            我习惯用工程证据而不是技术名词证明能力：明确问题、设置对照、统一指标、复现实验，再把结论转化为代码、文档和可公开的技术叙事。
+          </p>
+          <a class="text-link" href="experience.html">查看完整教育与工作时间线 <span>→</span></a>
+        </div>
+        <div class="focus-list reveal" aria-label="当前技术方向">
+          <div class="focus-item"><span class="focus-index">01</span><strong>LLM Post-training Infrastructure</strong><small>ACTIVE</small></div>
+          <div class="focus-item"><span class="focus-index">02</span><strong>Inference Systems & Runtime</strong><small>ACTIVE</small></div>
+          <div class="focus-item"><span class="focus-index">03</span><strong>GPU Kernels & Performance</strong><small>DEEPENING</small></div>
+          <div class="focus-item"><span class="focus-index">04</span><strong>Heterogeneous Computing</strong><small>FOUNDATION</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line" id="featured-projects">
+      <div class="shell">
+        <div class="section-title-row reveal">
+          <div>
+            <span class="section-kicker">Featured Projects / 精选项目</span>
+            <h2>用可复现的项目，呈现真实的工程能力。</h2>
+          </div>
+          <a class="text-link" href="projects.html">浏览全部项目 <span>→</span></a>
+        </div>
+
+        <div class="card-grid">
+          <a class="card project-card reveal" href="projects/router-replay.html">
+            <div class="card-top"><span class="project-number">PROJECT 01</span><span class="badge research">RL INFRA</span></div>
+            <h3>MoE Router Replay：训推路由一致性闭环</h3>
+            <p>在 veRL + Megatron-LM + vLLM 链路中，对比 Baseline、R2 Record 与 R3 Replay，统一正确性、概率漂移、性能和训练效果指标。</p>
+            <div class="project-evidence">
+              <div class="evidence-chip"><strong>1.0 / 0.0</strong><span>top-k overlap / mismatch</span></div>
+              <div class="evidence-chip"><strong>30×–77×</strong><span>脱敏 logprob drift 改善</span></div>
+            </div>
+            <div class="card-footer-link"><span>查看实验设计与结果</span><span>↗</span></div>
+          </a>
+
+          <a class="card project-card reveal" href="projects/gemm-profiling.html">
+            <div class="card-top"><span class="project-number">PROJECT 02</span><span class="badge engineering">GPU PERF</span></div>
+            <h3>H200 MoE / Grouped GEMM Profiling 与调优</h3>
+            <p>对齐 T×top-k 与 compact rows 的统计语义，构造本地回放验证线上 profile，并围绕 SM90 候选配置优化代表性 shape。</p>
+            <div class="project-evidence">
+              <div class="evidence-chip"><strong>4×–6×</strong><span>修正 rows 口径误判</span></div>
+              <div class="evidence-chip"><strong>+5.3%</strong><span>目标 shape 加速</span></div>
+            </div>
+            <div class="card-footer-link"><span>查看性能分析方法</span><span>↗</span></div>
+          </a>
+
+          <a class="card project-card reveal" href="projects/musa-extension.html">
+            <div class="card-top"><span class="project-number">PROJECT 03</span><span class="badge opensource">OPEN SOURCE</span></div>
+            <h3>TensorFlow MUSA Extension：框架、算子与稳定性</h3>
+            <p>覆盖算子支持、GELU Fusion、HostMemory 语义、长跑稳定性与 Kernel Timing，为国产 GPU TensorFlow 后端建立调试和优化闭环。</p>
+            <div class="project-evidence">
+              <div class="evidence-chip"><strong>+36.6%</strong><span>真实 shape testcase</span></div>
+              <div class="evidence-chip"><strong>21.2→10.7 μs</strong><span>Logical_Or 热点路径</span></div>
+            </div>
+            <div class="card-footer-link"><span>查看公开贡献与案例</span><span>↗</span></div>
+          </a>
+
+          <a class="card project-card reveal" href="projects/quant-runtime.html">
+            <div class="card-top"><span class="project-number">PROJECT 04</span><span class="badge progress">IN PROGRESS</span></div>
+            <h3>高性能 LLM 量化推理 Runtime</h3>
+            <p>基于 PyTorch Extension 与 CUTLASS 构建轻量推理 Runtime，探索 W8A8、FP8、AWQ、GEMM 与 Decode GEMV 的端到端协同。</p>
+            <div class="project-evidence">
+              <div class="evidence-chip"><strong>W8A8 / FP8</strong><span>量化策略</span></div>
+              <div class="evidence-chip"><strong>CUTLASS</strong><span>核心计算后端</span></div>
+            </div>
+            <div class="card-footer-link"><span>查看架构与后续计划</span><span>↗</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <span class="section-kicker">Experience / 经历主线</span>
+            <h2>不是零散技术栈，而是一条逐步下沉的系统路线。</h2>
+          </div>
+          <p>从大型 C/C++ 工程，到国产 GPU 框架后端，再到 H200 上的大模型训练推理系统与 GPU 性能优化。</p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card">
+              <div class="timeline-heading">
+                <div><h3>LLM Post-training & Inference Infrastructure</h3><span class="timeline-company">企业 AI Infra 项目 · 脱敏展示</span></div>
+                <span class="timeline-date">2026.05 — 2026.07</span>
+              </div>
+              <p>围绕 veRL、Megatron-LM、vLLM/SGLang、Router Replay、CUDA Graph 与 H200 MoE 热路径，完成训推一致性诊断、实验设计和算子级性能分析。</p>
+              <div class="tag-list"><span class="tag">veRL</span><span class="tag">Megatron-LM</span><span class="tag">vLLM</span><span class="tag">H200</span><span class="tag">MoE</span></div>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card">
+              <div class="timeline-heading">
+                <div><h3>算子与编译器优化实习生</h3><span class="timeline-company">摩尔线程 · TensorFlow MUSA Extension</span></div>
+                <span class="timeline-date">2026.02 — 2026.05</span>
+              </div>
+              <p>参与 TensorFlow on MUSA 的算子支持、插件集成、图优化与稳定性修复，形成从框架语义、Host/Device 路径到 Device Kernel 的完整理解。</p>
+              <div class="tag-list"><span class="tag">TensorFlow</span><span class="tag">MUSA</span><span class="tag">C++</span><span class="tag">Fusion</span><span class="tag">Profiling</span></div>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card">
+              <div class="timeline-heading">
+                <div><h3>通用软件工程师实习生</h3><span class="timeline-company">华为 · 大型 C/C++ 工程</span></div>
+                <span class="timeline-date">2024.08 — 2024.12</span>
+              </div>
+              <p>维护静态分析工具链，进行规则重构、日志定位与 Python 自动化开发，建立大型工程代码阅读、测试验证和持续交付基础。</p>
+              <div class="tag-list"><span class="tag">C/C++</span><span class="tag">Python</span><span class="tag">Static Analysis</span><span class="tag">CI</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <span class="section-kicker">Evidence Loop / 能力证据闭环</span>
+            <h2>把一次实验，沉淀成长期可复用的技术资产。</h2>
+          </div>
+          <p>这是这个网站区别于普通线上简历的核心：每个项目都要能够解释问题、数据、边界与工程决策。</p>
+        </div>
+        <div class="loop reveal" aria-label="实验闭环">
+          <div class="loop-step"><span>01</span><strong>问题</strong></div>
+          <div class="loop-step"><span>02</span><strong>假设</strong></div>
+          <div class="loop-step"><span>03</span><strong>实验</strong></div>
+          <div class="loop-step"><span>04</span><strong>数据</strong></div>
+          <div class="loop-step"><span>05</span><strong>结论</strong></div>
+          <div class="loop-step"><span>06</span><strong>决策</strong></div>
+          <div class="loop-step"><span>07</span><strong>叙事</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-title-row reveal">
+          <div>
+            <span class="section-kicker">Writing / 技术写作</span>
+            <h2>把系统问题讲清楚，也把失败路径留下来。</h2>
+          </div>
+          <a class="text-link" href="writing.html">查看文章规划 <span>→</span></a>
+        </div>
+        <div class="card-grid three">
+          <a class="card article-card reveal" href="writing.html#router-replay-note">
+            <div class="article-meta"><span class="project-number">SYSTEMS</span><span class="badge progress">DRAFT</span></div>
+            <h3>Router Replay：从 token-layer-topk 到训推一致性</h3>
+            <p>解释为什么 MoE rollout 与 training 会产生路由差异，以及怎样设计一致性指标。</p>
+            <div class="card-footer-link"><span>阅读摘要</span><span>→</span></div>
+          </a>
+          <a class="card article-card reveal" href="writing.html#bi-gemm-note">
+            <div class="article-meta"><span class="project-number">KERNEL</span><span class="badge planned">PLANNED</span></div>
+            <h3>为什么 Batch-Invariant GEMM 更确定，却可能更慢</h3>
+            <p>从 Split-K、Reduction 顺序与 Full-K Tiling 解释确定性和性能之间的取舍。</p>
+            <div class="card-footer-link"><span>阅读摘要</span><span>→</span></div>
+          </a>
+          <a class="card article-card reveal" href="writing.html#moe-gemm-note">
+            <div class="article-meta"><span class="project-number">PERFORMANCE</span><span class="badge progress">NOTES</span></div>
+            <h3>H200 上如何正确 Profile MoE Grouped GEMM</h3>
+            <p>避免 rows 统计口径、expert 分布与线上离线 shape 对齐中的常见误判。</p>
+            <div class="card-footer-link"><span>阅读摘要</span><span>→</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-title-row reveal">
+          <div>
+            <span class="section-kicker">Roadmap / 项目规划</span>
+            <h2>持续补齐从 Kernel 到系统的完整能力。</h2>
+          </div>
+          <a class="text-link" href="roadmap.html">查看完整 Roadmap <span>→</span></a>
+        </div>
+        <div class="roadmap-grid">
+          <div class="roadmap-column reveal">
+            <h3>NOW</h3>
+            <ul class="check-list">
+              <li class="done">整理 Router Replay 实验与公开叙事</li>
+              <li>补齐 vLLM / DeepGEMM 端到端性能案例</li>
+              <li>沉淀 H200/B200 架构迁移知识</li>
+            </ul>
+          </div>
+          <div class="roadmap-column reveal">
+            <h3>NEXT</h3>
+            <ul class="check-list">
+              <li>发布首篇完整实验复盘</li>
+              <li>建立可复现 Benchmark 模板</li>
+              <li>增加 CUDA / CuTe Kernel 公开项目</li>
+            </ul>
+          </div>
+          <div class="roadmap-column reveal">
+            <h3>LATER</h3>
+            <ul class="check-list">
+              <li>深入 MoE 系统与通信优化</li>
+              <li>持续贡献推理引擎或算子仓库</li>
+              <li>形成个人 AI Infra 知识体系</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="cta-panel reveal">
+          <div>
+            <span class="section-kicker">Contact / 联系</span>
+            <h2>欢迎交流 AI Infra、推理优化与 GPU 性能工程。</h2>
+            <p>无论是技术讨论、实习与校招机会，还是开源协作，都可以通过邮件或 GitHub 联系我。</p>
+          </div>
+          <div class="button-row">
+            <a class="button primary" href="mailto:225010160@link.cuhk.edu.cn">发送邮件</a>
+            <a class="button" href="https://github.com/XFDG" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a class="text-link" href="contact.html">完整联系方式 <span>→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
-  <script>
-  (async () => {
-    const repo = 'tensorflow_musa_extension';
-    const parts = ['site.part01a.b64','site.part01b.b64','site.part01c.b64','site.part01d.b64','site.part02.b64','site.part03.b64','site.part04.b64'];
-    const segments = location.pathname.split('/').filter(Boolean);
-    const repoIndex = segments.indexOf(repo);
-    const base = repoIndex >= 0 ? '/' + segments.slice(0, repoIndex + 1).join('/') + '/' : '/';
-    try {
-      if (!('DecompressionStream' in window)) throw new Error('Browser does not support gzip streams');
-      const encoded = (await Promise.all(parts.map(async name => {
-        const response = await fetch(base + name, {cache: 'force-cache'});
-        if (!response.ok) throw new Error('Missing site bundle: ' + name);
-        return response.text();
-      }))).join('').replace(/\s/g, '');
 
-      const binary = atob(encoded);
-      const compressed = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) compressed[i] = binary.charCodeAt(i);
-      const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-      const archive = new Uint8Array(await new Response(stream).arrayBuffer());
-      const decoder = new TextDecoder();
-      const files = new Map();
-      const field = (start, length) => decoder.decode(archive.subarray(start, start + length)).split('\0')[0].trim();
-      let offset = 0;
-      while (offset + 512 <= archive.length) {
-        const name = field(offset, 100);
-        if (!name) break;
-        const prefix = field(offset + 345, 155);
-        const fullName = (prefix ? prefix + '/' : '') + name;
-        const size = parseInt(field(offset + 124, 12) || '0', 8) || 0;
-        const type = field(offset + 156, 1);
-        const dataStart = offset + 512;
-        if (!type || type === '0') files.set(fullName.replace(/^\.\//, ''), archive.slice(dataStart, dataStart + size));
-        offset = dataStart + Math.ceil(size / 512) * 512;
-      }
-
-      let requested = repoIndex >= 0 ? segments.slice(repoIndex + 1).join('/') : segments.join('/');
-      if (!requested || requested.endsWith('/')) requested += 'index.html';
-      if (!files.has(requested)) requested = '404.html';
-
-      const text = path => decoder.decode(files.get(path));
-      const objectUrl = (path, type) => URL.createObjectURL(new Blob([files.get(path)], {type}));
-      const cssUrl = objectUrl('styles.css', 'text/css');
-      const jsUrl = objectUrl('script.js', 'text/javascript');
-      const iconUrl = objectUrl('assets/favicon.svg', 'image/svg+xml');
-      const manifestUrl = objectUrl('assets/site.webmanifest', 'application/manifest+json');
-
-      let html = text(requested)
-        .replace(/href=(['"])(?:\.\.\/)?styles\.css\1/g, `href="${cssUrl}"`)
-        .replace(/src=(['"])(?:\.\.\/)?script\.js\1/g, `src="${jsUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/favicon\.svg\1/g, `href="${iconUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/site\.webmanifest\1/g, `href="${manifestUrl}"`);
-
-      document.open();
-      document.write(html);
-      document.close();
-    } catch (error) {
-      console.error(error);
-      document.querySelector('.bar').style.display = 'none';
-      document.querySelector('#error').style.display = 'block';
-    }
-  })();
-  </script>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <span>© <span data-year></span> Haoran Feng. Built as an evolving AI Infra evidence lab.</span>
+      <div class="footer-links"><a href="mailto:225010160@link.cuhk.edu.cn">Email</a><a href="https://github.com/XFDG" target="_blank" rel="noreferrer">GitHub</a><a href="resume.html">Resume</a></div>
+    </div>
+  </footer>
 </body>
 </html>

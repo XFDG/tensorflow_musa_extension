@@ -3,87 +3,163 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI Infra、GPU 性能、推理系统与实验复盘写作规划。">
   <meta name="theme-color" content="#07090d">
-  <title>Haoran Feng — AI Infra Lab</title>
-  <style>
-    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07090d;color:#f2f5f7}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#183448 0,transparent 34%),#07090d}
-    main{width:min(680px,calc(100% - 40px));padding:48px;border:1px solid #ffffff1f;border-radius:24px;background:#0d121acc;box-shadow:0 28px 90px #0008}
-    .mark{width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#9db3ff,#78e3c5);color:#081016;font-weight:800;margin-bottom:28px}
-    h1{font-size:clamp(28px,6vw,48px);line-height:1.08;margin:0 0 16px}p{color:#aab4c2;line-height:1.75;margin:0}.bar{height:3px;background:#ffffff17;border-radius:99px;overflow:hidden;margin-top:30px}.bar::after{content:"";display:block;width:42%;height:100%;background:linear-gradient(90deg,#9db3ff,#78e3c5);animation:load 1.1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(140%)}}
-    a{color:#9db3ff}.error{display:none;margin-top:22px;color:#ffb7b7}
-  </style>
+  <title>文章 — Haoran Feng</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
-<body>
+<body data-page="writing">
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">HF</span><span class="brand-copy">Haoran Feng <small>AI Infra Lab</small></span></a>
+      <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false"><span></span></button>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html" data-nav="home">首页</a><a href="experience.html" data-nav="experience">经历</a><a href="projects.html" data-nav="projects">项目</a><a href="writing.html" data-nav="writing">文章</a><a href="roadmap.html" data-nav="roadmap">Roadmap</a><a href="contact.html" data-nav="contact">联系</a><a class="nav-cta" href="resume.html" data-nav="resume">公开简历</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    <div class="mark">HF</div>
-    <h1>正在打开 Haoran's AI Infra Lab</h1>
-    <p>正在加载项目、经历与技术文章。首次访问只需下载一个约 40 KB 的站点包。</p>
-    <div class="bar" aria-label="加载中"></div>
-    <p class="error" id="error">页面加载失败。可以先访问 <a href="https://github.com/XFDG">GitHub</a>，或发送邮件至 <a href="mailto:225010160@link.cuhk.edu.cn">225010160@link.cuhk.edu.cn</a>。</p>
+    <section class="page-hero">
+      <div class="shell page-hero-grid">
+        <div class="reveal">
+          <span class="eyebrow">Writing & Technical Notes</span>
+          <h1><span class="gradient-text">把复杂系统讲清楚，把工程判断留下来。</span></h1>
+          <p class="page-lead">文章栏目不追求知识点数量，而是围绕真实问题组织：先给出系统背景，再解释执行路径、指标和实验，最后明确结论边界。首版内容以文章规划与摘要为主。</p>
+        </div>
+        <aside class="page-aside reveal">
+          <span class="page-aside-label">Writing Principle</span>
+          <strong>Mechanism first. Evidence second.</strong>
+          <p>少写“是什么”的百科式文章，多写“为什么发生、如何验证、工程上怎样决策”。</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section compact section-line">
+      <div class="shell">
+        <div class="filter-bar reveal">
+          <button class="filter-button active" type="button" data-filter="all">ALL</button>
+          <button class="filter-button" type="button" data-filter="systems">SYSTEMS</button>
+          <button class="filter-button" type="button" data-filter="kernel">KERNEL</button>
+          <button class="filter-button" type="button" data-filter="performance">PERFORMANCE</button>
+          <button class="filter-button" type="button" data-filter="paper">PAPER NOTES</button>
+        </div>
+
+        <div class="card-grid three">
+          <a class="card article-card filter-item reveal" data-category="systems performance" href="#router-replay-note">
+            <div class="article-meta"><span class="project-number">SYSTEMS · 01</span><span class="badge progress">DRAFT</span></div>
+            <h3>Router Replay：从 token-layer-topk 到训推一致性</h3>
+            <p>为什么 rollout 与 training 可能选择不同 expert？怎样定义 mismatch、overlap 与 logprob drift？</p>
+            <div class="card-footer-link"><span>查看文章摘要</span><span>↓</span></div>
+          </a>
+          <a class="card article-card filter-item reveal" data-category="kernel" href="#bi-gemm-note">
+            <div class="article-meta"><span class="project-number">KERNEL · 01</span><span class="badge planned">PLANNED</span></div>
+            <h3>为什么 Batch-Invariant GEMM 更确定，却可能更慢</h3>
+            <p>从 Split-K、跨 CTA Reduction、固定 K 累加顺序与 decode shape 出发理解确定性代价。</p>
+            <div class="card-footer-link"><span>查看文章摘要</span><span>↓</span></div>
+          </a>
+          <a class="card article-card filter-item reveal" data-category="performance kernel" href="#moe-gemm-note">
+            <div class="article-meta"><span class="project-number">PERF · 01</span><span class="badge progress">NOTES</span></div>
+            <h3>H200 上如何正确 Profile MoE Grouped GEMM</h3>
+            <p>rows 口径、expert 分布、compact token、线上 range 与离线 replay 如何共同影响结论。</p>
+            <div class="card-footer-link"><span>查看文章摘要</span><span>↓</span></div>
+          </a>
+          <a class="card article-card filter-item reveal" data-category="systems" href="#runtime-map-note">
+            <div class="article-meta"><span class="project-number">SYSTEMS · 02</span><span class="badge planned">PLANNED</span></div>
+            <h3>vLLM、SGLang 与 TensorRT-LLM：不要只看“都能推理”</h3>
+            <p>从调度、KV Cache、Kernel、部署边界和扩展方式比较三类推理系统。</p>
+            <div class="card-footer-link"><span>查看文章摘要</span><span>↓</span></div>
+          </a>
+          <a class="card article-card filter-item reveal" data-category="performance systems" href="#cuda-graph-note">
+            <div class="article-meta"><span class="project-number">PERF · 02</span><span class="badge planned">PLANNED</span></div>
+            <h3>CUDA Graph 在 RL Rollout 中到底改变了什么</h3>
+            <p>解释 capture、静态地址、采样路径、编译 sampler 与正确性/稳定性问题之间的关系。</p>
+            <div class="card-footer-link"><span>查看文章摘要</span><span>↓</span></div>
+          </a>
+          <a class="card article-card filter-item reveal" data-category="paper systems" href="#paper-reading-note">
+            <div class="article-meta"><span class="project-number">PAPER · 01</span><span class="badge progress">QUEUE</span></div>
+            <h3>论文阅读：从机制摘要走向可复现实验</h3>
+            <p>围绕 DeepSeek-V3.2、DSpark 与 speculative decoding，建立“论文机制—代码路径—工程价值”模板。</p>
+            <div class="card-footer-link"><span>查看文章摘要</span><span>↓</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line" id="router-replay-note">
+      <div class="narrow reveal">
+        <span class="section-kicker">Draft 01 / Systems</span>
+        <h2>Router Replay：从 token-layer-topk 到训推一致性</h2>
+        <p>这篇文章会先解释 MoE 模型中 token 如何经过 router 选择 top-k experts，再区分 rollout 侧与训练侧在执行路径、数值精度、Kernel 实现和随机状态上的差异。核心不是“Replay 能不能开”，而是怎样证明 replay 的对象、mask 和层/token 对齐是正确的。</p>
+        <ol class="number-list">
+          <li><strong>问题定义：</strong>同一个 response token 在 rollout 与 training 阶段是否经过相同 expert？</li>
+          <li><strong>指标设计：</strong>exact match、top-k overlap、mismatch、valid token-layer count 与概率漂移分别回答什么问题。</li>
+          <li><strong>实验结构：</strong>Baseline、R2 Record、R3 Replay 与 CUDA Graph on/off 如何形成最小对照。</li>
+          <li><strong>结论边界：</strong>路由一致并不自动等于最终 reward 更好，还必须验证性能、KL 与长期训练稳定性。</li>
+        </ol>
+        <a class="text-link" href="projects/router-replay.html">先查看对应项目详情 <span>→</span></a>
+      </div>
+    </section>
+
+    <section class="section section-line" id="bi-gemm-note">
+      <div class="narrow reveal">
+        <span class="section-kicker">Planned 02 / Kernel</span>
+        <h2>为什么 Batch-Invariant GEMM 更确定，却可能更慢</h2>
+        <p>文章会使用固定问题形状 <span class="mono">A[M,2048] × B[2048,128] → C[M,128]</span>，对比 Split-K 并行归约与 Full-K Tiling。重点解释浮点加法不满足结合律，为什么不同 partial sum 合并顺序会让输出随 batch / 调度变化，以及不跨 CTA 拆 K 后为何会损失并行度。</p>
+        <div class="callout"><strong>预期输出</strong><p>一张 Global GEMM → CTA Tile → Warp Tile → Thread Tile 的层级图，加上 decode 场景 M=1/2/4/8/12 的性能讨论。</p></div>
+      </div>
+    </section>
+
+    <section class="section section-line" id="moe-gemm-note">
+      <div class="narrow reveal">
+        <span class="section-kicker">Notes 03 / Performance</span>
+        <h2>H200 上如何正确 Profile MoE Grouped GEMM</h2>
+        <p>MoE 的 grouped GEMM 很容易因为 rows 定义不同得到完全错误的性能判断。文章会区分全展开的 <span class="mono">T × topk</span>、经过 mask 后的有效 token、DeepEP compact rows 和每个 expert 的真实分布，再说明如何从线上 NVTX range 抽取代表性 shape 做离线 replay。</p>
+        <div class="metric-grid">
+          <div class="metric-card"><strong>Rows</strong><span>先统一统计语义</span><small>DO NOT MIX</small></div>
+          <div class="metric-card"><strong>Distribution</strong><span>保留 expert 负载形态</span><small>SHAPE ≠ WORKLOAD</small></div>
+          <div class="metric-card"><strong>Replay</strong><span>验证线上/离线差异</span><small>CONTROL VARIABLES</small></div>
+        </div>
+        <a class="text-link" href="projects/gemm-profiling.html">查看对应项目详情 <span>→</span></a>
+      </div>
+    </section>
+
+    <section class="section section-line" id="runtime-map-note">
+      <div class="narrow reveal">
+        <span class="section-kicker">Planned 04 / Systems</span>
+        <h2>vLLM、SGLang 与 TensorRT-LLM：不要只看“都能推理”</h2>
+        <p>计划从系统边界而非营销特性比较：请求调度、Paged KV Cache、Prefix Cache、编译/Kernel 体系、Serving API、分布式能力、模型适配成本和最适合的部署场景。</p>
+      </div>
+    </section>
+
+    <section class="section section-line" id="cuda-graph-note">
+      <div class="narrow reveal">
+        <span class="section-kicker">Planned 05 / Performance</span>
+        <h2>CUDA Graph 在 RL Rollout 中到底改变了什么</h2>
+        <p>文章将从 CPU launch overhead 讲到 capture 限制，并结合采样器、动态 shape、静态地址与 NCCL/通信行为，分析为什么“开 Graph 更快”并不是总成立，以及调试时怎样用 eager 模式隔离变量。</p>
+      </div>
+    </section>
+
+    <section class="section section-line" id="paper-reading-note">
+      <div class="narrow reveal">
+        <span class="section-kicker">Queue 06 / Paper Notes</span>
+        <h2>论文阅读：从机制摘要走向可复现实验</h2>
+        <p>每篇论文将按统一模板整理：它解决的系统瓶颈、关键机制、实现依赖、与已有系统的差异、可能失效的场景，以及一个可以在现有硬件上执行的最小复现实验。</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="cta-panel reveal">
+          <div><span class="section-kicker">Publishing Plan</span><h2>先完成一篇真正有数据的文章，再追求数量。</h2><p>首篇优先选择 Router Replay 或 MoE GEMM Profiling，因为它们最能体现系统理解、实验设计和工程判断。</p></div>
+          <div class="button-row"><a class="button primary" href="roadmap.html">查看发布计划</a><a class="button" href="projects.html">项目证据</a></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <script>
-  (async () => {
-    const repo = 'tensorflow_musa_extension';
-    const parts = ['site.part01a.b64','site.part01b.b64','site.part01c.b64','site.part01d.b64','site.part02.b64','site.part03.b64','site.part04.b64'];
-    const segments = location.pathname.split('/').filter(Boolean);
-    const repoIndex = segments.indexOf(repo);
-    const base = repoIndex >= 0 ? '/' + segments.slice(0, repoIndex + 1).join('/') + '/' : '/';
-    try {
-      if (!('DecompressionStream' in window)) throw new Error('Browser does not support gzip streams');
-      const encoded = (await Promise.all(parts.map(async name => {
-        const response = await fetch(base + name, {cache: 'force-cache'});
-        if (!response.ok) throw new Error('Missing site bundle: ' + name);
-        return response.text();
-      }))).join('').replace(/\s/g, '');
 
-      const binary = atob(encoded);
-      const compressed = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) compressed[i] = binary.charCodeAt(i);
-      const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-      const archive = new Uint8Array(await new Response(stream).arrayBuffer());
-      const decoder = new TextDecoder();
-      const files = new Map();
-      const field = (start, length) => decoder.decode(archive.subarray(start, start + length)).split('\0')[0].trim();
-      let offset = 0;
-      while (offset + 512 <= archive.length) {
-        const name = field(offset, 100);
-        if (!name) break;
-        const prefix = field(offset + 345, 155);
-        const fullName = (prefix ? prefix + '/' : '') + name;
-        const size = parseInt(field(offset + 124, 12) || '0', 8) || 0;
-        const type = field(offset + 156, 1);
-        const dataStart = offset + 512;
-        if (!type || type === '0') files.set(fullName.replace(/^\.\//, ''), archive.slice(dataStart, dataStart + size));
-        offset = dataStart + Math.ceil(size / 512) * 512;
-      }
-
-      let requested = repoIndex >= 0 ? segments.slice(repoIndex + 1).join('/') : segments.join('/');
-      if (!requested || requested.endsWith('/')) requested += 'index.html';
-      if (!files.has(requested)) requested = '404.html';
-
-      const text = path => decoder.decode(files.get(path));
-      const objectUrl = (path, type) => URL.createObjectURL(new Blob([files.get(path)], {type}));
-      const cssUrl = objectUrl('styles.css', 'text/css');
-      const jsUrl = objectUrl('script.js', 'text/javascript');
-      const iconUrl = objectUrl('assets/favicon.svg', 'image/svg+xml');
-      const manifestUrl = objectUrl('assets/site.webmanifest', 'application/manifest+json');
-
-      let html = text(requested)
-        .replace(/href=(['"])(?:\.\.\/)?styles\.css\1/g, `href="${cssUrl}"`)
-        .replace(/src=(['"])(?:\.\.\/)?script\.js\1/g, `src="${jsUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/favicon\.svg\1/g, `href="${iconUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/site\.webmanifest\1/g, `href="${manifestUrl}"`);
-
-      document.open();
-      document.write(html);
-      document.close();
-    } catch (error) {
-      console.error(error);
-      document.querySelector('.bar').style.display = 'none';
-      document.querySelector('#error').style.display = 'block';
-    }
-  })();
-  </script>
+  <footer class="site-footer"><div class="shell footer-inner"><span>© <span data-year></span> Haoran Feng.</span><div class="footer-links"><a href="mailto:225010160@link.cuhk.edu.cn">Email</a><a href="https://github.com/XFDG" target="_blank" rel="noreferrer">GitHub</a><a href="resume.html">Resume</a></div></div></footer>
 </body>
 </html>

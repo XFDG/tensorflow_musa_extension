@@ -3,87 +3,149 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="冯浩然的 AI Infra 学习、项目与内容发布 Roadmap。">
   <meta name="theme-color" content="#07090d">
-  <title>Haoran Feng — AI Infra Lab</title>
-  <style>
-    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07090d;color:#f2f5f7}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#183448 0,transparent 34%),#07090d}
-    main{width:min(680px,calc(100% - 40px));padding:48px;border:1px solid #ffffff1f;border-radius:24px;background:#0d121acc;box-shadow:0 28px 90px #0008}
-    .mark{width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#9db3ff,#78e3c5);color:#081016;font-weight:800;margin-bottom:28px}
-    h1{font-size:clamp(28px,6vw,48px);line-height:1.08;margin:0 0 16px}p{color:#aab4c2;line-height:1.75;margin:0}.bar{height:3px;background:#ffffff17;border-radius:99px;overflow:hidden;margin-top:30px}.bar::after{content:"";display:block;width:42%;height:100%;background:linear-gradient(90deg,#9db3ff,#78e3c5);animation:load 1.1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(140%)}}
-    a{color:#9db3ff}.error{display:none;margin-top:22px;color:#ffb7b7}
-  </style>
+  <title>Roadmap — Haoran Feng</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
-<body>
+<body data-page="roadmap">
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html"><span class="brand-mark">HF</span><span class="brand-copy">Haoran Feng <small>AI Infra Lab</small></span></a>
+      <button class="menu-toggle" type="button" aria-label="打开导航" aria-expanded="false"><span></span></button>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html" data-nav="home">首页</a><a href="experience.html" data-nav="experience">经历</a><a href="projects.html" data-nav="projects">项目</a><a href="writing.html" data-nav="writing">文章</a><a href="roadmap.html" data-nav="roadmap">Roadmap</a><a href="contact.html" data-nav="contact">联系</a><a class="nav-cta" href="resume.html" data-nav="resume">公开简历</a>
+      </nav>
+    </div>
+  </header>
+
   <main>
-    <div class="mark">HF</div>
-    <h1>正在打开 Haoran's AI Infra Lab</h1>
-    <p>正在加载项目、经历与技术文章。首次访问只需下载一个约 40 KB 的站点包。</p>
-    <div class="bar" aria-label="加载中"></div>
-    <p class="error" id="error">页面加载失败。可以先访问 <a href="https://github.com/XFDG">GitHub</a>，或发送邮件至 <a href="mailto:225010160@link.cuhk.edu.cn">225010160@link.cuhk.edu.cn</a>。</p>
+    <section class="page-hero">
+      <div class="shell page-hero-grid">
+        <div class="reveal">
+          <span class="eyebrow">Now / Next / Later</span>
+          <h1><span class="gradient-text">把职业规划拆成可以交付的技术成果。</span></h1>
+          <p class="page-lead">Roadmap 不写“深入学习 CUDA”这种无法验收的目标，而是把每个方向落到具体产物：项目详情页、实验报告、公开仓库、Benchmark、PR 或深度文章。</p>
+        </div>
+        <aside class="page-aside reveal">
+          <span class="page-aside-label">Core Direction</span>
+          <strong>Kernel ↔ Runtime ↔ Distributed Systems</strong>
+          <p>长期目标是能够跨层定位大模型训练推理性能问题，并把优化落实到底层实现。</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section compact section-line">
+      <div class="shell">
+        <div class="roadmap-grid">
+          <div class="roadmap-column reveal">
+            <h3>NOW · 2026 Q3</h3>
+            <ul class="check-list">
+              <li class="done">完成个人网站 v1 信息架构与视觉原型</li>
+              <li class="done">整理 Router Replay 的正确性与 drift 证据</li>
+              <li>补齐 Router Replay 性能 / 长程 reward 的可公开结论</li>
+              <li>将 H200 MoE GEMM profile 形成结构化项目页</li>
+              <li>梳理 B200 编程模型与 H→B 迁移检查清单</li>
+            </ul>
+          </div>
+          <div class="roadmap-column reveal">
+            <h3>NEXT · 2026 Q4</h3>
+            <ul class="check-list">
+              <li>发布第一篇完整实验复盘</li>
+              <li>完善量化 Runtime 的 E2E latency / throughput / memory 对照</li>
+              <li>建立 CUDA / CuTe Kernel 公开 Benchmark 仓库</li>
+              <li>补充 H200、B200 与国产 GPU 的可迁移性能方法</li>
+              <li>参与至少一个推理引擎或算子仓库的有效贡献</li>
+            </ul>
+          </div>
+          <div class="roadmap-column reveal">
+            <h3>LATER · 2027 H1</h3>
+            <ul class="check-list">
+              <li>形成 MoE 训练推理系统专题知识图谱</li>
+              <li>完成一个跨 Kernel / Runtime / Serving 的端到端优化项目</li>
+              <li>建立公开实验数据页与自动化回归看板</li>
+              <li>让网站成为秋招、技术交流与长期作品集的统一入口</li>
+              <li>持续沉淀海外工作 / 博士申请可使用的英文材料</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><span class="section-kicker">Capability Tracks / 能力主线</span><h2>四条主线同步推进，但每个阶段只交付少数关键成果。</h2></div>
+          <p>避免“全栈”变成浅尝辄止：训练推理系统作为主轴，GPU Kernel 与异构后端提供深度，实验与表达保证成果可被看见。</p>
+        </div>
+        <div class="card-grid four">
+          <article class="card article-card reveal">
+            <div class="article-meta"><span class="project-number">TRACK 01</span><span class="badge research">CORE</span></div>
+            <h3>LLM Post-training Infra</h3>
+            <p>veRL、Megatron、Rollout、Router Replay、KL / Logprob、训练稳定性与多卡系统。</p>
+          </article>
+          <article class="card article-card reveal">
+            <div class="article-meta"><span class="project-number">TRACK 02</span><span class="badge engineering">CORE</span></div>
+            <h3>Inference Systems</h3>
+            <p>vLLM、SGLang、KV Cache、CUDA Graph、Speculative Decoding、量化与 Serving。</p>
+          </article>
+          <article class="card article-card reveal">
+            <div class="article-meta"><span class="project-number">TRACK 03</span><span class="badge opensource">DEPTH</span></div>
+            <h3>GPU Kernels</h3>
+            <p>CUDA、CUTLASS、CuTe、GEMM、Grouped GEMM、Attention、Roofline 与 Profile。</p>
+          </article>
+          <article class="card article-card reveal">
+            <div class="article-meta"><span class="project-number">TRACK 04</span><span class="badge progress">LEVERAGE</span></div>
+            <h3>Evidence & Writing</h3>
+            <p>可复现实验、公开 PR、技术文章、英文叙事、个人网站与面试案例。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell intro-grid">
+        <div class="intro-copy reveal">
+          <span class="section-kicker">Definition of Done / 完成标准</span>
+          <h2>一个目标只有在形成外部可见产物后，才算真正完成。</h2>
+          <p>例如“学习 B200”不是完成；能够写出架构差异、迁移风险、编程模型变化、Benchmark 结果与 Kernel 优化建议，才是完成。</p>
+        </div>
+        <div class="focus-list reveal">
+          <div class="focus-item"><span class="focus-index">01</span><strong>有明确问题与实验假设</strong><small>QUESTION</small></div>
+          <div class="focus-item"><span class="focus-index">02</span><strong>有代码、配置与可复现环境</strong><small>REPRO</small></div>
+          <div class="focus-item"><span class="focus-index">03</span><strong>有数据、失败路径与结论边界</strong><small>EVIDENCE</small></div>
+          <div class="focus-item"><span class="focus-index">04</span><strong>有项目页、文章或公开贡献</strong><small>OUTPUT</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><span class="section-kicker">Publishing Cadence / 更新节奏</span><h2>以质量为先的轻量发布节奏。</h2></div>
+          <p>网站不需要为了“周更”制造内容；更合理的节奏是每月完成一个可验证成果，并持续更新现有项目。</p>
+        </div>
+        <div class="stats-grid reveal">
+          <div class="stat"><span class="stat-value">1 / 月</span><span class="stat-label">脱敏实验或深度复盘</span></div>
+          <div class="stat"><span class="stat-value">1 / 季</span><span class="stat-label">公开代码或有效 PR</span></div>
+          <div class="stat"><span class="stat-value">持续</span><span class="stat-label">更新项目数据与失败路径</span></div>
+          <div class="stat"><span class="stat-value">双语</span><span class="stat-label">核心项目摘要逐步中英双语</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="cta-panel reveal">
+          <div><span class="section-kicker">Current Priority</span><h2>当前第一优先级：把 Router Replay 做成完整的旗舰案例。</h2><p>它同时覆盖 RL、MoE、训练推理一致性、多卡系统、CUDA Graph、指标设计和实验方法，最能代表现阶段的技术定位。</p></div>
+          <div class="button-row"><a class="button primary" href="projects/router-replay.html">查看当前版本</a><a class="button" href="writing.html#router-replay-note">文章规划</a></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <script>
-  (async () => {
-    const repo = 'tensorflow_musa_extension';
-    const parts = ['site.part01a.b64','site.part01b.b64','site.part01c.b64','site.part01d.b64','site.part02.b64','site.part03.b64','site.part04.b64'];
-    const segments = location.pathname.split('/').filter(Boolean);
-    const repoIndex = segments.indexOf(repo);
-    const base = repoIndex >= 0 ? '/' + segments.slice(0, repoIndex + 1).join('/') + '/' : '/';
-    try {
-      if (!('DecompressionStream' in window)) throw new Error('Browser does not support gzip streams');
-      const encoded = (await Promise.all(parts.map(async name => {
-        const response = await fetch(base + name, {cache: 'force-cache'});
-        if (!response.ok) throw new Error('Missing site bundle: ' + name);
-        return response.text();
-      }))).join('').replace(/\s/g, '');
 
-      const binary = atob(encoded);
-      const compressed = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) compressed[i] = binary.charCodeAt(i);
-      const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-      const archive = new Uint8Array(await new Response(stream).arrayBuffer());
-      const decoder = new TextDecoder();
-      const files = new Map();
-      const field = (start, length) => decoder.decode(archive.subarray(start, start + length)).split('\0')[0].trim();
-      let offset = 0;
-      while (offset + 512 <= archive.length) {
-        const name = field(offset, 100);
-        if (!name) break;
-        const prefix = field(offset + 345, 155);
-        const fullName = (prefix ? prefix + '/' : '') + name;
-        const size = parseInt(field(offset + 124, 12) || '0', 8) || 0;
-        const type = field(offset + 156, 1);
-        const dataStart = offset + 512;
-        if (!type || type === '0') files.set(fullName.replace(/^\.\//, ''), archive.slice(dataStart, dataStart + size));
-        offset = dataStart + Math.ceil(size / 512) * 512;
-      }
-
-      let requested = repoIndex >= 0 ? segments.slice(repoIndex + 1).join('/') : segments.join('/');
-      if (!requested || requested.endsWith('/')) requested += 'index.html';
-      if (!files.has(requested)) requested = '404.html';
-
-      const text = path => decoder.decode(files.get(path));
-      const objectUrl = (path, type) => URL.createObjectURL(new Blob([files.get(path)], {type}));
-      const cssUrl = objectUrl('styles.css', 'text/css');
-      const jsUrl = objectUrl('script.js', 'text/javascript');
-      const iconUrl = objectUrl('assets/favicon.svg', 'image/svg+xml');
-      const manifestUrl = objectUrl('assets/site.webmanifest', 'application/manifest+json');
-
-      let html = text(requested)
-        .replace(/href=(['"])(?:\.\.\/)?styles\.css\1/g, `href="${cssUrl}"`)
-        .replace(/src=(['"])(?:\.\.\/)?script\.js\1/g, `src="${jsUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/favicon\.svg\1/g, `href="${iconUrl}"`)
-        .replace(/href=(['"])(?:\.\.\/)?assets\/site\.webmanifest\1/g, `href="${manifestUrl}"`);
-
-      document.open();
-      document.write(html);
-      document.close();
-    } catch (error) {
-      console.error(error);
-      document.querySelector('.bar').style.display = 'none';
-      document.querySelector('#error').style.display = 'block';
-    }
-  })();
-  </script>
+  <footer class="site-footer"><div class="shell footer-inner"><span>© <span data-year></span> Haoran Feng.</span><div class="footer-links"><a href="mailto:225010160@link.cuhk.edu.cn">Email</a><a href="https://github.com/XFDG" target="_blank" rel="noreferrer">GitHub</a><a href="resume.html">Resume</a></div></div></footer>
 </body>
 </html>

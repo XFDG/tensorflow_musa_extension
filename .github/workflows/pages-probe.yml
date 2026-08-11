@@ -1,0 +1,77 @@
+name: Probe GitHub Pages
+
+on:
+  push:
+    branches:
+      - gh-pages
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Activate and inspect Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SITE_URL: https://xfdg.github.io/tensorflow_musa_extension/
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          initial_get="$(gh api "repos/${GITHUB_REPOSITORY}/pages" 2>&1)"
+          initial_code=$?
+          activation_action=get-existing
+          activation_output=""
+
+          if [[ $initial_code -ne 0 ]]; then
+            activation_action=create
+            activation_output="$(gh api --method POST "repos/${GITHUB_REPOSITORY}/pages" \
+              -f 'source[branch]=gh-pages' -f 'source[path]=/' 2>&1)"
+            activation_code=$?
+            if [[ $activation_code -ne 0 ]] && grep -Eqi 'already exists|status.?409|HTTP 409' <<<"$activation_output"; then
+              activation_action=update-existing
+              activation_output="$(gh api --method PUT "repos/${GITHUB_REPOSITORY}/pages" \
+                -f 'source[branch]=gh-pages' -f 'source[path]=/' 2>&1)"
+              activation_code=$?
+            fi
+          else
+            activation_code=0
+          fi
+
+          pages_json="$(gh api "repos/${GITHUB_REPOSITORY}/pages" 2>&1)"
+          pages_code=$?
+          build_output="$(gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds" 2>&1)"
+          build_code=$?
+          http_status="$(curl -L -sS -o /tmp/site-index.html -w '%{http_code}' "$SITE_URL" || true)"
+          contains_haoran=false
+          if [[ -f /tmp/site-index.html ]] && grep -q 'Haoran' /tmp/site-index.html; then
+            contains_haoran=true
+          fi
+
+          checked_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          jq -n \
+            --arg checked_at "$checked_at" \
+            --arg site_url "$SITE_URL" \
+            --arg http_status "$http_status" \
+            --argjson contains_haoran "$contains_haoran" \
+            --arg initial_get "$initial_get" \
+            --argjson initial_code "$initial_code" \
+            --arg activation_action "$activation_action" \
+            --arg activation_output "$activation_output" \
+            --argjson activation_code "$activation_code" \
+            --arg pages_json "$pages_json" \
+            --argjson pages_code "$pages_code" \
+            --arg build_output "$build_output" \
+            --argjson build_code "$build_code" \
+            '{checked_at:$checked_at, site_url:$site_url, http_status:$http_status, contains_haoran:$contains_haoran, initial_get:{code:$initial_code,output:$initial_get}, activation:{action:$activation_action,code:$activation_code,output:$activation_output}, pages_get:{code:$pages_code,output:$pages_json}, build_request:{code:$build_code,output:$build_output}}' \
+            > /tmp/pages-probe.json
+
+          encoded="$(base64 -w0 /tmp/pages-probe.json)"
+          gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/pages-probe.json" \
+            -f message='Record GitHub Pages probe' \
+            -f content="$encoded" \
+            -f branch=gh-pages >/dev/null
